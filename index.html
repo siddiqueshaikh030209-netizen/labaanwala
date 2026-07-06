@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>LABAANWALA | Pune's First Egyptian Dessert</title>
+  <meta name="description" content="Labaanwala brings the viral dessert experience of Dubai and Egypt to Pune. Indulge in premium layers of rich cream, crunch, and sweet Middle Eastern tradition.">
+  <meta name="keywords" content="Labaan Pune, Dubai Dessert Pune, Best Dessert Pune, Lotus Dessert Pune, Pistachio Dessert Pune, Middle Eastern Dessert Pune, Viral Dessert Pune, Premium Dessert Pune, Labaanwala Pune">
+  <meta name="author" content="Labaanwala">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="LABAANWALA | Pune's First Egyptian Dessert">
+  <meta property="og:description" content="Premium Dubai-inspired desserts in Pune. Lotus, Pistachio, Nutella, Oreo and more.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/images/hero%20bg/labaanwala%20logo.jpeg">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Splide.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- ======== PRELOADER ======== -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-content">
+      <img src="assets/images/hero bg/labaanwala logo.jpeg" alt="Labaanwala" class="preloader-logo">
+      <div class="preloader-progress-wrap">
+        <span class="preloader-progress-number" id="preloader-number">0</span>
+        <span class="preloader-progress-percent">%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- ======== HEADER / NAVIGATION ======== -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="#home" class="logo" id="nav-logo">
+      </a>
+      
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="#home" class="nav-link" id="nav-link-home">Home</a></li>
+          <li><a href="#story" class="nav-link" id="nav-link-story">Our Story</a></li>
+          <li><a href="#products" class="nav-link" id="nav-link-products">Our Products</a></li>
+          <li><a href="#specialties" class="nav-link" id="nav-link-specialties">Our Nature</a></li>
+          <li><a href="#location" class="nav-link" id="nav-link-location">Store Location</a></li>
+        </ul>
+      </nav>
+      
+      <div class="nav-cta max-lg:hidden">
+        <a href="#products" class="btn btn-primary" style="padding: 0.65rem 1.5rem; font-size: 0.82rem;" id="nav-cta-menu">Our Menu</a>
+      </div>
+      
+      <button class="hamburger" aria-label="Toggle Navigation" id="mobile-nav-toggle" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======== HERO SECTION ======== -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+
+        <!-- LEFT: Typography & CTAs -->
+        <div class="hero-content">
+          <img src="assets/images/hero bg/labaanwala logo.jpeg" alt="Labaanwala" class="hero-main-logo" id="hero-main-logo">
+          <span class="hero-eyebrow" id="hero-eyebrow">Pune's First Egyptian Dessert</span>
+
+          <div class="hero-title-container">
+            <span class="hero-title-line">
+              <span class="hero-title-word" id="hero-word-1">Pune's</span>
+            </span>
+            <span class="hero-title-line">
+              <span class="hero-title-word light" id="hero-word-2">First Egyptian</span>
+            </span>
+            <span class="hero-title-line">
+              <span class="hero-title-word" id="hero-word-3">Dessert</span>
+            </span>
+          </div>
+
+          <p class="hero-description" id="hero-desc">
+            Labaanwala brings the viral dessert experience of Dubai and Egypt to Pune — indulge in premium layers of rich cream, crunch, and sweet Middle Eastern tradition.
+          </p>
+
+          <div class="hero-ctas" id="hero-ctas">
+            <a href="#products" class="btn btn-primary" id="hero-btn-menu">
+              <i class="fa-solid fa-utensils"></i> Our Menu
+            </a>
+            <a href="https://wa.me/919730738285" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" id="hero-btn-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp Chat
+            </a>
+            <a href="tel:+919730738285" class="btn btn-secondary" id="hero-btn-call">
+              <i class="fa-solid fa-phone"></i> Call Us
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT: Dessert Showcase Slider -->
+        <div class="hero-showcase" id="hero-showcase">
+          <div class="hero-background-slider" id="hero-slider">
+            <div class="hero-bg-slide active" data-name="Salankatia">
+              <img src="assets/images/hero bg/Salankatia.jpeg" alt="Salankatia" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Qashtuta">
+              <img src="assets/images/hero bg/Qashtuta.jpeg" alt="Qashtuta" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Lou'a">
+              <img src="assets/images/hero bg/LOU'A.jpeg" alt="Lou'a" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Koushri">
+              <img src="assets/images/hero bg/koushri.jpeg" alt="Koushri" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Heba Cake">
+              <img src="assets/images/hero bg/Heba Cake.jpeg" alt="Heba Cake" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Fazea Chocola Cake">
+              <img src="assets/images/hero bg/Fazea Chocola Cake.jpeg" alt="Fazea Chocola Cake" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Kabsa">
+              <img src="assets/images/hero bg/Kabsa.jpeg" alt="Kabsa" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Cheese Bomb">
+              <img src="assets/images/hero bg/Cheese Bomb.jpeg" alt="Cheese Bomb" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Aseeratul Pistachio">
+              <img src="assets/images/hero bg/aseeratul pistachio.jpeg" alt="Aseeratul Pistachio" class="hero-slide-img">
+            </div>
+            <div class="hero-bg-slide" data-name="Aseeratul Lotus">
+              <img src="assets/images/hero bg/Aseeratul Lotus.jpeg" alt="Aseeratul Lotus" class="hero-slide-img">
+            </div>
+          </div>
+
+          <!-- Floating badge -->
+          <div class="hero-floating-badge">
+            <i class="fa-solid fa-star badge-icon"></i>
+            <span class="badge-text">Premium Desserts</span>
+          </div>
+
+          <!-- Progress dots -->
+          <div class="hero-slide-dots" id="hero-dots" aria-label="Slide indicators"></div>
+
+          <!-- Slide name label -->
+          <div class="hero-slide-label" id="hero-slide-label">Salankatia</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== MARQUEE STRIP ======== -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <!-- Duplicated for seamless loop -->
+      <span class="marquee-item"><span class="marquee-dot"></span>Salankatia</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Qashtuta</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Lou'a</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Koushri</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Heba Cake</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Fazea Chocola Cake</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Kabsa</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Cheese Bomb</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Pistachio</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Lotus</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Kinder</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Nutella</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="marquee-item"><span class="marquee-dot"></span>Salankatia</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Qashtuta</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Lou'a</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Koushri</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Heba Cake</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Fazea Chocola Cake</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Kabsa</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Cheese Bomb</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Pistachio</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Lotus</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Kinder</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Aseeratul Nutella</span>
+    </div>
+  </div>
+
+  <!-- ======== OUR STORY ======== -->
+  <section class="section story" id="story">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-content">
+          <span class="story-title-sub">Our Story</span>
+          <h2 class="story-title text-blue">Labaanwala Is Here To Delight Your Taste Buds</h2>
+          <p class="story-text">
+            Labaanwala brings the viral dessert experience of Dubai and Egypt to Pune. Inspired by rich traditional Egyptian dessert recipes and crafted using premium ingredients, every bowl is designed to deliver a luxurious experience.
+          </p>
+          <p class="story-text">
+            Our mission is simple: serve unforgettable desserts that combine tradition, indulgence and innovation — the taste of Dubai and Egypt right here in Pune.
+          </p>
+          <p class="story-textstrong">
+            Every spoonful tells a story of flavor, texture and craftsmanship.
+          </p>
+          <a href="#products" class="btn btn-primary" id="story-btn-explore">Explore Flavors</a>
+        </div>
+        
+        <div class="story-image-wrap">
+          <img src="assets/images/story/story_interior.jpg" alt="Labaanwala Dessert Lounge" class="story-img" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== OUR PRODUCTS ======== -->
+  <section class="section products" id="products">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">You Are Going To Love Our Desserts</span>
+        <h2 class="section-title text-blue">Our Products</h2>
+      </div>
+      
+      <p class="products-desc">
+        Rich layers, premium toppings, creamy textures, and unforgettable flavors — every dessert is handcrafted fresh daily for you.
+      </p>
+      
+      <!-- 12 Categories Grid -->
+      <div class="menu-grid">
+        
+        <!-- 1. Salankatia -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Salankatia.jpeg" alt="Salankatia" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Salankatia</h3>
+            </div>
+            <p class="menu-desc">Smooth vanilla custard, moist vanilla cake, crispy kataifi, and your choice of Pistachio, Hazelnut, Kinder, or Biscoff create a perfectly balanced dessert.</p>
+          </div>
+        </div>
+
+        <!-- 2. Qashtuta -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Qashtuta.jpeg" alt="Qashtuta" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Qashtuta</h3>
+            </div>
+            <p class="menu-desc">Traditional milk-soaked cake topped with layers of pistachio, nutella, and fresh cream.</p>
+          </div>
+        </div>
+
+        <!-- 3. Lou'a -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/LOU'A.jpeg" alt="Lou'a" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Lou'a</h3>
+            </div>
+            <p class="menu-desc">Silky chocolate cream base bowl loaded with fresh strawberries and roasted pistachios.</p>
+          </div>
+        </div>
+
+        <!-- 4. Koushri -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/koushri.jpeg" alt="Koushri" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Koushri</h3>
+            </div>
+            <p class="menu-desc">An indulgent layers of dual-flavor creams, crunchy pastry, and hazelnut topping.</p>
+          </div>
+        </div>
+
+        <!-- 5. Heba Cake -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Heba Cake.jpeg" alt="Heba Cake" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Heba Cake</h3>
+            </div>
+            <p class="menu-desc">Rich chocolate tray cake swirled with pistachio cream and topped with roasted nuts.</p>
+          </div>
+        </div>
+
+        <!-- 6. Kabsa -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Kabsa.jpeg" alt="Kabsa" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Kabsa</h3>
+            </div>
+            <p class="menu-desc">Crispy kataifi layered with choco pops, hazelnut spread, and mixed nuts delivers a satisfying blend of crunch and sweetness.</p>
+          </div>
+        </div>
+
+        <!-- 7. Fazea Chocola Cake -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Fazea Chocola Cake.jpeg" alt="Fazea Chocola Cake" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Fazea Chocola Cake</h3>
+            </div>
+            <p class="menu-desc">Layers of rich brownie, creamy chocolate spread, crispy baklava, and choco chips come together for the ultimate chocolate indulgence.</p>
+          </div>
+        </div>
+
+        <!-- 8. Cheese Bomb -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Cheese Bomb.jpeg" alt="Cheese Bomb" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Cheese Bomb</h3>
+            </div>
+            <p class="menu-desc">Crispy kataifi filled with melted cheese, rich hazelnut spread, and crushed pistachios creates an irresistible mix of creamy, crunchy, and nutty flavors.</p>
+          </div>
+        </div>
+
+        <!-- 9. Aseeratul Nutella -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Aseeratul Nutella.jpeg" alt="Aseeratul Nutella" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Aseeratul Nutella</h3>
+            </div>
+            <p class="menu-desc">Rich, thick traditional milk dessert cup loaded with Nutella hazelnut cream swirl.</p>
+          </div>
+        </div>
+
+        <!-- 10. Aseeratul Pistachio -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/aseeratul pistachio.jpeg" alt="Aseeratul Pistachio" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Aseeratul Pistachio</h3>
+            </div>
+            <p class="menu-desc">Rich, thick traditional milk dessert cup loaded with luxury pistachio cream swirl.</p>
+          </div>
+        </div>
+
+        <!-- 11. Aseeratul Kinder -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Aseeratul Kinder.jpeg" alt="Aseeratul Kinder" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Aseeratul Kinder</h3>
+            </div>
+            <p class="menu-desc">Rich, thick traditional milk dessert cup loaded with cashews and Kinder chocolate bars.</p>
+          </div>
+        </div>
+
+        <!-- 12. Aseeratul Lotus -->
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="assets/images/hero bg/Aseeratul Lotus.jpeg" alt="Aseeratul Lotus" class="menu-img" loading="lazy">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">Aseeratul Lotus</h3>
+            </div>
+            <p class="menu-desc">Rich, thick traditional milk dessert cup loaded with Lotus Biscoff crumble & caramel drizzle.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Visual Menu Cards Section -->
+      <div class="visual-menu-cards-section">
+        <div class="visual-menu-header">
+          <span class="visual-menu-subtitle">Menu Cards</span>
+          <h3 class="visual-menu-title">Our Full Menu Cards</h3>
+        </div>
+        <div class="visual-menu-grid">
+          <div class="menu-image-card">
+            <img src="assets/images/menu/WhatsApp Image 2026-06-29 at 22.43.43.jpeg" alt="Labaanwala Menu Page 1" class="menu-card-img" loading="lazy">
+            <div class="menu-image-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>View Full Menu</span>
+            </div>
+          </div>
+          <div class="menu-image-card">
+            <img src="assets/images/menu/WhatsApp Image 2026-06-29 at 22.43.44.jpeg" alt="Labaanwala Menu Page 2" class="menu-card-img" loading="lazy">
+            <div class="menu-image-overlay">
+              <i class="fa-solid fa-magnifying-glass-plus"></i>
+              <span>View Full Menu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== OUR NATURE ======== -->
+  <section class="section specialties" id="specialties">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">What Makes Us Unique</span>
+        <h2 class="section-title text-blue">Our Nature</h2>
+      </div>
+
+      <p class="specialties-intro">
+        At Labaanwala, every dessert reflects our deep-rooted commitment to quality, tradition, and an extraordinary experience. Here's what sets us apart.
+      </p>
+      
+      <div class="specialties-grid">
+        <div class="specialty-card">
+          <div class="specialty-icon-wrap">
+            <i class="fa-solid fa-scroll specialty-icon"></i>
+          </div>
+          <span class="specialty-num">01</span>
+          <h3 class="specialty-title">Authentic Egyptian Recipes</h3>
+          <p class="specialty-desc">We stay true to traditional methods, ensuring an authentic taste.</p>
+        </div>
+        <div class="specialty-card">
+          <div class="specialty-icon-wrap">
+            <i class="fa-solid fa-gem specialty-icon"></i>
+          </div>
+          <span class="specialty-num">02</span>
+          <h3 class="specialty-title">Premium Ingredients</h3>
+          <p class="specialty-desc">Only the finest ingredients are used to create our desserts.</p>
+        </div>
+        <div class="specialty-card">
+          <div class="specialty-icon-wrap">
+            <i class="fa-solid fa-sliders specialty-icon"></i>
+          </div>
+          <span class="specialty-num">03</span>
+          <h3 class="specialty-title">Customizable Options</h3>
+          <p class="specialty-desc">From sugar-free to fruit-infused, we cater to every requirement.</p>
+        </div>
+        <div class="specialty-card">
+          <div class="specialty-icon-wrap">
+            <i class="fa-solid fa-palette specialty-icon"></i>
+          </div>
+          <span class="specialty-num">04</span>
+          <h3 class="specialty-title">Elegant Presentation</h3>
+          <p class="specialty-desc">Every dessert is crafted to be as visually appealing as it is delicious.</p>
+        </div>
+        <div class="specialty-card">
+          <div class="specialty-icon-wrap">
+            <i class="fa-solid fa-earth-americas specialty-icon"></i>
+          </div>
+          <span class="specialty-num">05</span>
+          <h3 class="specialty-title">Cultural Fusion</h3>
+          <p class="specialty-desc">A perfect blend of Egyptian tradition and Pune's love for desserts.</p>
+        </div>
+        <div class="specialty-card">
+          <div class="specialty-icon-wrap">
+            <i class="fa-solid fa-user-chef specialty-icon"></i>
+          </div>
+          <span class="specialty-num">06</span>
+          <h3 class="specialty-title">Crafted by Trained Experts</h3>
+          <p class="specialty-desc">Our desserts are skillfully prepared by trained staff, ensuring perfection in every detail.</p>
+        </div>
+        <div class="specialty-card specialty-card-wide">
+          <div class="specialty-wide-content">
+            <div class="specialty-icon-wrap specialty-icon-wrap-wide">
+              <i class="fa-solid fa-star specialty-icon"></i>
+            </div>
+            <div class="specialty-wide-text">
+              <span class="specialty-num">07</span>
+              <h3 class="specialty-title">A Taste &amp; Experience</h3>
+              <p class="specialty-desc">Labaanwala isn't just a dessert – it's a rare and unforgettable experience that delights all your senses.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ======== STORE LOCATION ======== -->
+  <section class="section location" id="location">
+    <div class="container">
+      <div class="location-grid">
+        <div class="location-info">
+          <span class="story-title-sub">Visit Labaanwala</span>
+          <h2 class="location-title text-blue">Store Location</h2>
+          
+          <ul class="location-details">
+            <li class="location-item">
+              <div class="location-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="location-text">
+                <strong>Address</strong>
+                Shop No 1, Bhagwat Sankul, Salunke Vihar Rd,<br>
+                Opp. B G Lonkar Road, Kondhwa,<br>
+                Pune, Maharashtra 411048
+              </div>
+            </li>
+            <li class="location-item">
+              <div class="location-icon"><i class="fa-solid fa-phone"></i></div>
+              <div class="location-text">
+                <strong>Phone</strong>
+                <a href="tel:+919730738285" style="color: inherit;">+91 97307 38285</a>
+              </div>
+            </li>
+            <li class="location-item">
+              <div class="location-icon"><i class="fa-brands fa-instagram"></i></div>
+              <div class="location-text">
+                <strong>Instagram</strong>
+                <a href="https://instagram.com/labaanwalapune" target="_blank" rel="noopener noreferrer" style="color: inherit;">@labaanwalapune</a>
+              </div>
+            </li>
+            <li class="location-item">
+              <div class="location-icon"><i class="fa-solid fa-clock"></i></div>
+              <div class="location-text">
+                <strong>Hours</strong>
+                Open Daily: 12:00 PM – 12:00 AM
+              </div>
+            </li>
+          </ul>
+          
+          <div class="location-ctas">
+            <a href="https://www.google.com/maps/search/Shop+No+1,+Bhagwat+Sankul,+Salunke+Vihar+Rd,+Opp.+B+G+Lonkar+Road,+Kondhwa,+Pune" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="location-btn-directions">
+              <i class="fa-solid fa-map-location-dot"></i> Get Directions
+            </a>
+            <a href="tel:+919730738285" class="btn btn-secondary" id="location-btn-call">
+              <i class="fa-solid fa-phone"></i> Call Now
+            </a>
+          </div>
+        </div>
+        
+        <div class="map-container">
+          <iframe 
+            src="https://maps.google.com/maps?q=Shop%20No%201,%20Bhagwat%20Sankul,%20Salunke%20Vihar%20Rd,%20Kondhwa,%20Pune,%20Maharashtra%20411048&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy"
+            title="Labaanwala Store Location">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/images/hero bg/labaanwala logo.jpeg" alt="Labaanwala" class="footer-logo-img">
+          <p class="footer-desc">
+            Bringing the luxury of authentic Egyptian dessert culture to the food lovers of Pune. Every spoonful of our signature creamy bowls represents pure craftsmanship and premium quality ingredients.
+          </p>
+          <div class="footer-socials">
+            <a href="https://instagram.com/labaanwalapune" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Instagram" id="footer-social-insta">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/919730738285" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="WhatsApp" id="footer-social-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="tel:+919730738285" class="footer-social-btn" aria-label="Call Us" id="footer-social-phone">
+              <i class="fa-solid fa-phone"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <span class="footer-heading">Quick Links</span>
+          <ul class="footer-links">
+            <li><a href="#home" class="footer-link">Home</a></li>
+            <li><a href="#story" class="footer-link">Our Story</a></li>
+            <li><a href="#products" class="footer-link">Our Products</a></li>
+            <li><a href="#specialties" class="footer-link">Our Specialties</a></li>
+            <li><a href="#location" class="footer-link">Store Location</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <span class="footer-heading">Store Details</span>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div>Shop No 1, Bhagwat Sankul, Salunke Vihar Rd, Kondhwa, Pune 411048</div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div>
+            <div><a href="tel:+919730738285" style="color: inherit;">+91 97307 38285</a></div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-solid fa-clock"></i></div>
+            <div>Open Daily: 12:00 PM – 12:00 AM</div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-brands fa-instagram"></i></div>
+            <div><a href="https://instagram.com/labaanwalapune" target="_blank" rel="noopener noreferrer" style="color: inherit;">@labaanwalapune</a></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div>&copy; 2026 LABAANWALA Pune. All Rights Reserved.</div>
+        <div>Designed with &hearts; for Pune's dessert lovers.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======== LIGHTBOX ======== -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Image Viewer">
+    <button class="lightbox-close" aria-label="Close" id="lightbox-btn-close"><i class="fa-solid fa-xmark"></i></button>
+    <button class="lightbox-prev" aria-label="Previous" id="lightbox-btn-prev"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="lightbox-next" aria-label="Next" id="lightbox-btn-next"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="lightbox-content">
+      <img src="" alt="Gallery Image" class="lightbox-img" id="lightbox-img">
+    </div>
+  </div>
+
+  <!-- ======== FLOATING WHATSAPP ======== -->
+  <div class="floating-container">
+    <a href="https://wa.me/919730738285" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Order on WhatsApp" id="float-btn-whatsapp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- ======== STICKY MOBILE ORDER BAR ======== -->
+  <div class="sticky-order-bar" id="sticky-order-bar">
+    <div class="sticky-order-info">
+      <span class="sticky-order-title">Labaanwala Desserts</span>
+      <span class="sticky-order-sub">Order fresh Middle Eastern bowls</span>
+    </div>
+    <a href="https://wa.me/919730738285" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.65rem 1.3rem; font-size: 0.82rem;" id="sticky-btn-order">
+      <i class="fa-solid fa-cart-shopping"></i> Order Now
+    </a>
+  </div>
+
+  <!-- ======== JS LIBRARIES ======== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+  
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>
