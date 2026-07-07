@@ -756,15 +756,20 @@ img { max-width: 100%; display: block; }
 
 .story-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6rem;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 5rem;
   align-items: center;
 }
 
 @media (max-width: 991px) {
   .story-grid {
     grid-template-columns: 1fr;
-    gap: 3.5rem;
+    gap: 3rem;
+  }
+  .story-image-wrap {
+    aspect-ratio: 4 / 3;
+    max-width: 520px;
+    margin: 0 auto;
   }
 }
 
@@ -821,29 +826,28 @@ img { max-width: 100%; display: block; }
 
 .story-image-wrap {
   width: 100%;
+  aspect-ratio: 3 / 4;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow:
-    0 25px 60px rgba(0, 87, 184, 0.08),
-    0 0 0 1px rgba(0, 87, 184, 0.04);
   position: relative;
   transition: var(--transition-smooth);
+  box-shadow: 0 20px 60px rgba(0, 87, 184, 0.10);
 }
 
 .story-image-wrap:hover {
   transform: scale(1.01) translateY(-5px);
-  box-shadow: 0 30px 70px rgba(0, 87, 184, 0.14);
+  box-shadow: 0 30px 70px rgba(0, 87, 184, 0.18);
 }
 
 .story-img {
+  position: absolute;
+  left: 0;
   width: 100%;
-  height: 500px;
+  height: 130%;
+  top: -15%;
   object-fit: cover;
+  object-position: center center;
   display: block;
-}
-
-@media (max-width: 576px) {
-  .story-img { height: 300px; }
 }
 
 /* --- PRODUCTS SECTION --- */
@@ -1666,8 +1670,9 @@ img { max-width: 100%; display: block; }
   z-index: 999;
 }
 
+
 @media (max-width: 768px) {
-  .floating-container { bottom: 5.5rem; right: 1.25rem; }
+  .floating-container { bottom: 2rem; right: 1.25rem; }
 }
 
 .whatsapp-float {
@@ -1703,45 +1708,6 @@ img { max-width: 100%; display: block; }
 .whatsapp-float:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
-}
-
-/* --- STICKY MOBILE ORDER BAR --- */
-.sticky-order-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-top: 1px solid rgba(0, 87, 184, 0.08);
-  box-shadow: 0 -4px 25px rgba(0, 87, 184, 0.06);
-  padding: 0.9rem 1.5rem;
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 998;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.sticky-order-bar.active { transform: translateY(0); }
-
-.sticky-order-info { display: flex; flex-direction: column; }
-
-.sticky-order-title {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.sticky-order-sub {
-  font-size: 0.75rem;
-  color: var(--color-text-light);
-}
-
-@media (max-width: 991px) {
-  .sticky-order-bar { display: flex; }
 }
 
 /* --- MOBILE MENU OVERLAY --- */
@@ -1788,4 +1754,158 @@ img { max-width: 100%; display: block; }
 }
 
 
+/* =============================================
+   COMPREHENSIVE RESPONSIVE IMPROVEMENTS
+   Mobile / Tablet / All Devices
+============================================= */
+
+/* Prevent horizontal scroll on all devices */
+html, body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* --- HERO LOGO SIZE ON MOBILE --- */
+@media (max-width: 576px) {
+  .hero-main-logo { max-width: 150px; }
+  .hero { padding-top: 80px; padding-bottom: 3rem; }
+}
+
+/* --- HERO CTAS WRAPPING ON SMALL MOBILE --- */
+@media (max-width: 400px) {
+  .hero-ctas .btn { font-size: 0.82rem; padding: 0.7rem 1.2rem; }
+}
+
+/* --- NAV LOGO ON MOBILE --- */
+@media (max-width: 991px) {
+  .logo-img { max-height: 60px; }
+}
+
+/* --- STORY IMAGE - FIT PROPERLY ON ALL DEVICES --- */
+@media (max-width: 991px) {
+  .story-image-wrap {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* --- SECTION PADDING TABLET --- */
+@media (max-width: 768px) {
+  .section { padding: 4rem 0; }
+  .section-title-wrap { margin-bottom: 3rem; }
+  .products-desc { margin-bottom: 3rem; }
+}
+
+/* --- PRODUCTS GRID - 2 COLS ON TABLET --- */
+@media (max-width: 768px) and (min-width: 481px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* --- PRODUCTS GRID - 1 COL ON MOBILE --- */
+@media (max-width: 480px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* --- MENU CARD TEXT RESPONSIVE --- */
+@media (max-width: 576px) {
+  .menu-card-name { font-size: 1.05rem; }
+  .menu-card-desc { font-size: 0.88rem; }
+}
+
+/* --- SPECIALTIES GRID ON SMALL TABLETS --- */
+@media (max-width: 768px) and (min-width: 577px) {
+  .specialties-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- SPECIALTIES CARD ON MOBILE --- */
+@media (max-width: 576px) {
+  .specialty-card { padding: 2rem 1.5rem; }
+}
+
+/* --- LOCATION CTAS ON MOBILE --- */
+@media (max-width: 576px) {
+  .location-ctas { flex-direction: column; }
+  .location-ctas .btn { width: 100%; justify-content: center; text-align: center; }
+  .location-title { font-size: 2rem; }
+  .map-container, .map-container iframe { min-height: 300px; }
+}
+
+/* --- FOOTER ON MOBILE --- */
+@media (max-width: 576px) {
+  .footer { padding: 3rem 0 2rem 0; }
+  .footer-grid { gap: 2rem; }
+  .footer-logo-img { max-height: 45px; }
+  .footer-desc { font-size: 0.9rem; }
+}
+
+/* --- PRELOADER LOGO ON MOBILE --- */
+@media (max-width: 576px) {
+  .preloader-logo { height: 90px; }
+}
+
+/* --- STORY TEXT ALIGNMENT ON MOBILE --- */
+@media (max-width: 991px) {
+  .story-content {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .story-title { text-align: center; }
+  .story-text { text-align: center; }
+  .story-textstrong { text-align: center; }
+  #story-btn-explore { align-self: center; }
+}
+
+/* --- HERO DESCRIPTION WIDTH ON MOBILE --- */
+@media (max-width: 576px) {
+  .hero-description {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+}
+
+/* --- SMOOTH SCROLL ON TOUCH DEVICES --- */
+@media (pointer: coarse) {
+  * { -webkit-tap-highlight-color: transparent; }
+}
+
+/* --- MARQUEE STRIP RESPONSIVE --- */
+@media (max-width: 576px) {
+  .marquee-item { font-size: 0.72rem; padding: 0 0.75rem; }
+}
+
+/* --- LIGHTBOX ON MOBILE --- */
+@media (max-width: 576px) {
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
+  .lightbox-prev, .lightbox-next { width: 40px; height: 40px; font-size: 1rem; }
+  .lightbox-close { top: 0.75rem; right: 0.75rem; width: 40px; height: 40px; }
+}
+
+/* --- STORY CONTENT FONT SIZES ON MOBILE --- */
+@media (max-width: 576px) {
+  .story-title { font-size: clamp(1.6rem, 6vw, 2.2rem); margin-bottom: 1.25rem; }
+  .story-text { font-size: 0.97rem; }
+  .story-textstrong { font-size: 1.05rem; }
+}
+
+/* --- LOCATION SECTION TABLET FIX --- */
+@media (max-width: 768px) {
+  .location-grid { gap: 2rem; }
+  .location-info { padding: 2.5rem; }
+}
+
+/* --- SAFE AREA FOR NOTCHED PHONES --- */
+@supports (padding: max(0px)) {
+  .footer {
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+}
 

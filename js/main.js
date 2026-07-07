@@ -639,21 +639,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* =============================
-     STICKY MOBILE ORDER BAR
-  ============================= */
-  const stickyOrderBar = document.getElementById('sticky-order-bar');
-  if (stickyOrderBar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 350) {
-        stickyOrderBar.classList.add('active');
-      } else {
-        stickyOrderBar.classList.remove('active');
-      }
-    }, { passive: true });
-  }
-
-
-  /* =============================
      ACTIVE NAV LINK HIGHLIGHT
   ============================= */
   const sections = document.querySelectorAll('section[id], footer[id]');
