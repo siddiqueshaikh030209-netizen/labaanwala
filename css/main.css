@@ -1902,6 +1902,223 @@ html, body {
   .location-info { padding: 2.5rem; }
 }
 
+/* --- ADDRESS CARDS --- */
+.address-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .address-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .address-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.address-card {
+  background: var(--color-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 1.75rem;
+  border: 1px solid rgba(0, 87, 184, 0.06);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+
+.address-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 87, 184, 0.08);
+  border-color: rgba(0, 87, 184, 0.12);
+}
+
+.address-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--color-accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.address-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.address-card-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  margin-bottom: 0.2rem;
+}
+
+.address-card-phone {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+.address-card-badge {
+  display: inline-flex;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--color-accent-light);
+  color: var(--color-primary);
+  padding: 0.15rem 0.6rem;
+  border-radius: 30px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* --- ADDRESS MODAL --- */
+.address-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 10, 24, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.address-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.address-modal-content {
+  background: var(--color-secondary);
+  border-radius: 20px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+}
+
+.address-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: all 0.25s ease;
+  color: var(--color-text);
+}
+
+.address-modal-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: rotate(90deg);
+}
+
+.address-modal-body {
+  padding: 2.5rem;
+}
+
+@media (max-width: 576px) {
+  .address-modal-body { padding: 1.5rem; }
+}
+
+.address-modal-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-serif);
+}
+
+.address-modal-text {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.address-modal-phone-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+.address-modal-phone-wrap i {
+  color: var(--color-primary);
+  font-size: 1.1rem;
+}
+
+.address-modal-phone-wrap a {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.address-modal-phone-wrap a:hover {
+  color: var(--color-primary);
+}
+
+.address-modal-map {
+  width: 100%;
+  height: 280px;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0, 87, 184, 0.06);
+}
+
+.address-modal-map iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.address-modal-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 576px) {
+  .address-modal-actions { flex-direction: column; }
+  .address-modal-actions .btn { width: 100%; justify-content: center; }
+}
+
 /* --- SAFE AREA FOR NOTCHED PHONES --- */
 @supports (padding: max(0px)) {
   .footer {

@@ -1,17 +1,206 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* =============================
+     SUPABASE CLIENT
+  ============================= */
+  const supabaseUrl = 'https://lcxiruybhhvbyrvugzsr.supabase.co'
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjeGlydXliaGh2YnlydnVnenNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1ODk1MTIsImV4cCI6MjA5OTE2NTUxMn0.J0_b_GHA4Rm8UqiFXpIBwzyLcXaOiK0e-Qm4vMTEm7g'
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey)
+
+  let dataLoaded = false
+  let menuRenderResolve
+  const menuRendered = new Promise(r => { menuRenderResolve = r })
+
+  /* =============================
+     DATA FETCHING
+  ============================= */
+  async function fetchMenuItems() {
+    const { data, error } = await supabase
+      .from('menu_items')
+      .select('*')
+      .order('id', { ascending: true })
+
+    if (error) {
+      console.error('Failed to load menu items:', error)
+      return []
+    }
+    return data || []
+  }
+
+  async function fetchAddresses() {
+    const { data, error } = await supabase
+      .from('addresses')
+      .select('*')
+      .order('is_primary', { ascending: false })
+      .order('id', { ascending: true })
+
+    if (error) {
+      console.error('Failed to load addresses:', error)
+      return []
+    }
+    return data || []
+  }
+
+  async function fetchAndRenderAll() {
+    const [menuItems, addresses] = await Promise.all([
+      fetchMenuItems(),
+      fetchAddresses()
+    ])
+
+    renderMenuCards(menuItems)
+    renderAddressCards(addresses)
+    dataLoaded = true
+    menuRenderResolve()
+    ScrollTrigger.refresh()
+  }
+
+  /* =============================
+     RENDER MENU CARDS
+  ============================= */
+  function renderMenuCards(items) {
+    const grid = document.getElementById('menu-grid')
+    if (!grid) return
+
+    grid.innerHTML = items.map(item => {
+      const imgSrc = item.image_url || `assets/images/hero bg/${item.name}.jpeg`
+      return `
+        <div class="menu-card">
+          <div class="menu-img-wrap">
+            <img src="${imgSrc}" alt="${item.name}" class="menu-img" loading="lazy"
+              onerror="this.src='assets/images/hero bg/labaanwala logo.jpeg'">
+          </div>
+          <div class="menu-details">
+            <div class="menu-header">
+              <h3 class="menu-card-title">${item.name}</h3>
+              ${item.price ? `<span class="menu-price">₹${item.price}</span>` : ''}
+            </div>
+            <p class="menu-desc">${item.description}</p>
+          </div>
+        </div>
+      `
+    }).join('')
+  }
+
+  /* =============================
+     RENDER ADDRESS CARDS
+  ============================= */
+  let currentAddressData = null
+
+  function renderAddressCards(addresses) {
+    const container = document.getElementById('address-cards')
+    if (!container) return
+
+    container.innerHTML = addresses.map(addr => `
+      <button class="address-card" data-address-id="${addr.id}">
+        <div class="address-card-icon">
+          <i class="fa-solid fa-location-dot"></i>
+        </div>
+        <div class="address-card-info">
+          <div class="address-card-name">
+            ${addr.name}
+            ${addr.is_primary ? '<span class="address-card-badge">Primary</span>' : ''}
+          </div>
+          <div class="address-card-phone">${addr.phone || 'Phone not available'}</div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color: var(--color-text-light); font-size: 0.85rem;"></i>
+      </button>
+    `).join('')
+
+    currentAddressData = addresses
+
+    container.querySelectorAll('.address-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.dataset.addressId)
+        const addr = addresses.find(a => a.id === id)
+        if (addr) openAddressModal(addr)
+      })
+    })
+  }
+
+  /* =============================
+     ADDRESS MODAL
+  ============================= */
+  const addressModal = document.getElementById('address-modal')
+  const addressModalBody = document.getElementById('address-modal-body')
+
+  function openAddressModal(addr) {
+    if (!addressModal || !addressModalBody) return
+
+    const mapHtml = addr.map_embed_url
+      ? `<div class="address-modal-map"><iframe src="${addr.map_embed_url}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" title="${addr.name} Map"></iframe></div>`
+      : ''
+
+    const directionsHref = addr.address_text
+      ? `https://www.google.com/maps/search/${encodeURIComponent(addr.address_text)}`
+      : '#'
+
+    addressModalBody.innerHTML = `
+      <h3 class="address-modal-name">${addr.name}</h3>
+      ${addr.address_text ? `<p class="address-modal-text">${addr.address_text.replace(/\n/g, '<br>')}</p>` : ''}
+      ${addr.phone ? `
+        <div class="address-modal-phone-wrap">
+          <i class="fa-solid fa-phone"></i>
+          <a href="tel:${addr.phone}">${addr.phone}</a>
+        </div>
+      ` : ''}
+      ${mapHtml}
+      <div class="address-modal-actions">
+        <a href="${directionsHref}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <i class="fa-solid fa-map-location-dot"></i> Get Directions
+        </a>
+        ${addr.phone ? `
+          <a href="tel:${addr.phone}" class="btn btn-secondary">
+            <i class="fa-solid fa-phone"></i> Call Now
+          </a>
+        ` : ''}
+      </div>
+    `
+
+    addressModal.classList.add('active')
+    lenis.stop()
+  }
+
+  function closeAddressModal() {
+    if (addressModal) {
+      addressModal.classList.remove('active')
+      lenis.start()
+    }
+  }
+
+  if (addressModal) {
+    const closeBtn = addressModal.querySelector('.address-modal-close')
+    if (closeBtn) closeBtn.addEventListener('click', closeAddressModal)
+    addressModal.addEventListener('click', (e) => {
+      if (e.target === addressModal) closeAddressModal()
+    })
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (addressModal && addressModal.classList.contains('active')) {
+        closeAddressModal()
+        return
+      }
+      if (navMenu && navMenu.classList.contains('active')) {
+        closeMenu()
+      }
+    }
+  })
+
+  /* =============================
      PRELOADER ANIMATION
   ============================= */
   const loaderProgress = document.getElementById('preloader-number');
   const preloader = document.getElementById('preloader');
-  
+
+  fetchAndRenderAll()
+
   if (preloader && loaderProgress) {
     document.body.classList.add('loading');
-    
+
     gsap.to('.preloader-logo', { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 });
     gsap.to('.preloader-progress-wrap', { opacity: 1, duration: 1, ease: 'power3.out', delay: 0.5 });
-    
+
     let progress = { value: 0 };
     gsap.to(progress, {
       value: 100,
@@ -113,13 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', closeMenu);
   });
 
-  // Close menu on escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-      closeMenu();
-    }
-  });
-
 
   /* =============================
      HERO SHOWCASE SLIDER
@@ -130,7 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentHeroSlide = 0;
   let heroTimer;
 
-  // Build dots
   const dots = [];
   heroSlides.forEach((slide, i) => {
     const dot = document.createElement('button');
@@ -142,7 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
     dots.push(dot);
   });
 
-  // Initialize: pop in first slide's image on load
   if (heroSlides.length > 0) {
     const firstImg = heroSlides[0].querySelector('.hero-slide-img');
     if (firstImg) {
@@ -153,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function goToSlide(index) {
     if (currentHeroSlide === index) return;
 
-    // Animate OUT current slide's image
     const currentImg = heroSlides[currentHeroSlide].querySelector('.hero-slide-img');
     if (currentImg) {
       gsap.to(currentImg, { opacity: 0, scale: 0.5, duration: 0.35, ease: 'power2.in' });
@@ -169,7 +348,6 @@ document.addEventListener('DOMContentLoaded', () => {
       slideLabel.textContent = heroSlides[currentHeroSlide].dataset.name || '';
     }
 
-    // Animate IN new slide's image
     const nextImg = heroSlides[currentHeroSlide].querySelector('.hero-slide-img');
     if (nextImg) {
       gsap.fromTo(nextImg,
@@ -194,8 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (heroSlides.length > 1) {
     startHeroTimer();
-
-    // Pause on hover
     const showcase = document.getElementById('hero-showcase');
     if (showcase) {
       showcase.addEventListener('mouseenter', stopHeroTimer);
@@ -245,14 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-
-
-
   /* =============================
      TEXT REVEAL UTILITIES
   ============================= */
 
-  // Split heading text into overflow-hidden word wrappers
   function splitWords(el) {
     if (el.dataset.splitDone) return el.querySelectorAll('.word-inner');
     el.dataset.splitDone = '1';
@@ -263,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return el.querySelectorAll('.word-inner');
   }
 
-  // Word-by-word reveal for a heading element
   function revealWords(el, options = {}) {
     const words = splitWords(el);
     gsap.fromTo(words,
@@ -282,7 +453,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  // Fade+rise reveal for paragraph lines
   function revealLines(els, trigger, options = {}) {
     if (!els.length) return;
     gsap.fromTo(els,
@@ -302,7 +472,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  // Clip-path wipe reveal (left to right) for subtitles/labels
   function revealClip(els, options = {}) {
     gsap.fromTo(els,
       { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
@@ -324,8 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================
      SECTION SUBTITLES — Clip wipe
   ============================= */
-  const subtitles = document.querySelectorAll('.section-subtitle');
-  subtitles.forEach(el => {
+  document.querySelectorAll('.section-subtitle').forEach(el => {
     gsap.fromTo(el,
       { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
       {
@@ -337,8 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  const storySubtitles = document.querySelectorAll('.story-title-sub');
-  storySubtitles.forEach(el => {
+  document.querySelectorAll('.story-title-sub').forEach(el => {
     gsap.fromTo(el,
       { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
       {
@@ -358,16 +525,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.story-title').forEach(el =>
     revealWords(el, { trigger: el.closest('.story-content') || el, start: 'top 82%', stagger: 0.09 })
   );
-  document.querySelectorAll('.location-title').forEach(el =>
-    revealWords(el, { trigger: el.closest('.location-info') || el, start: 'top 85%' })
-  );
   document.querySelectorAll('.visual-menu-title').forEach(el => revealWords(el));
 
 
   /* =============================
      STORY SECTION — Line by line
   ============================= */
-  // Story image: parallax + reveal
   gsap.fromTo('.story-image-wrap',
     { opacity: 0, x: 60, scale: 0.97 },
     {
@@ -376,7 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // Parallax scroll on the story image
   gsap.to('.story-img', {
     yPercent: -12,
     ease: 'none',
@@ -388,7 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Story paragraphs reveal line by line
   revealLines(
     document.querySelectorAll('.story-text'),
     document.querySelector('.story-content'),
@@ -400,7 +561,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { duration: 1, start: 'top 78%' }
   );
 
-  // Story CTA button
   const storyCta = document.querySelector('#story-btn-explore');
   if (storyCta) {
     gsap.fromTo(storyCta,
@@ -416,29 +576,28 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================
      PRODUCTS SECTION
   ============================= */
-  // Products intro description
   revealLines(
     document.querySelectorAll('.products-desc'),
     document.querySelector('.products-desc'),
     { start: 'top 88%' }
   );
 
-  // Menu cards: cascade reveal
-  const menuCards = document.querySelectorAll('.menu-card');
-  if (menuCards.length) {
-    gsap.fromTo(menuCards,
-      { y: 70, opacity: 0, scale: 0.96 },
-      {
-        y: 0, opacity: 1, scale: 1,
-        duration: 0.85,
-        stagger: { each: 0.09, from: 'start' },
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.menu-grid', start: 'top 85%', once: true }
-      }
-    );
-  }
+  menuRendered.then(() => {
+    const menuCards = document.querySelectorAll('.menu-card');
+    if (menuCards.length) {
+      gsap.fromTo(menuCards,
+        { y: 70, opacity: 0, scale: 0.96 },
+        {
+          y: 0, opacity: 1, scale: 1,
+          duration: 0.85,
+          stagger: { each: 0.09, from: 'start' },
+          ease: 'power3.out',
+          scrollTrigger: { trigger: '.menu-grid', start: 'top 85%', once: true }
+        }
+      );
+    }
+  });
 
-  // Menu cards section header
   const visualMenuHeader = document.querySelector('.visual-menu-header');
   if (visualMenuHeader) {
     gsap.fromTo(visualMenuHeader,
@@ -450,7 +609,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  // Full menu image cards
   const menuImgCards = document.querySelectorAll('.menu-image-card');
   if (menuImgCards.length) {
     gsap.fromTo(menuImgCards,
@@ -486,7 +644,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  // Specialty titles inside each card — word reveal on hover for extra feel
   document.querySelectorAll('.specialty-title').forEach(el => {
     gsap.fromTo(el,
       { opacity: 0, x: -15 },
@@ -497,7 +654,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  // Specialty icons pop in
   document.querySelectorAll('.specialty-icon-wrap').forEach((el, i) => {
     gsap.fromTo(el,
       { scale: 0, opacity: 0 },
@@ -513,35 +669,18 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================
      LOCATION SECTION
   ============================= */
-  gsap.fromTo('.map-container',
-    { opacity: 0, x: 60, scale: 0.98 },
-    {
-      opacity: 1, x: 0, scale: 1, duration: 1.2, ease: 'power3.out',
-      scrollTrigger: { trigger: '.location-grid', start: 'top 80%', once: true }
+  menuRendered.then(() => {
+    const addressCards = document.querySelectorAll('.address-card');
+    if (addressCards.length) {
+      gsap.fromTo(addressCards,
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out',
+          scrollTrigger: { trigger: '.address-cards-grid', start: 'top 85%', once: true }
+        }
+      );
     }
-  );
-
-  const locationItems = document.querySelectorAll('.location-item');
-  if (locationItems.length) {
-    gsap.fromTo(locationItems,
-      { x: -35, opacity: 0 },
-      {
-        x: 0, opacity: 1, duration: 0.75, stagger: 0.15, ease: 'power3.out',
-        scrollTrigger: { trigger: '.location-details', start: 'top 85%', once: true }
-      }
-    );
-  }
-
-  const locationCtas = document.querySelector('.location-ctas');
-  if (locationCtas) {
-    gsap.fromTo(locationCtas,
-      { opacity: 0, y: 20 },
-      {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: locationCtas, start: 'top 90%', once: true }
-      }
-    );
-  }
+  });
 
 
   /* =============================
@@ -561,8 +700,6 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollTrigger: { trigger: '.footer-grid', start: 'top 90%', once: true }
     }
   );
-
-
 
 
   /* =============================
