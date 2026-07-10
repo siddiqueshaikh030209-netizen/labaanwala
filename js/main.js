@@ -122,6 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const addressModal = document.getElementById('address-modal')
   const addressModalBody = document.getElementById('address-modal-body')
 
+  function extractCoordinates(embedUrl) {
+    if (!embedUrl) return null
+    const match = embedUrl.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)
+    if (match) return `${match[1]},${match[2]}`
+    const qMatch = embedUrl.match(/[?&]q=(-?\d+\.\d+),(-?\d+\.\d+)/)
+    if (qMatch) return `${qMatch[1]},${qMatch[2]}`
+    return null
+  }
+
   function openAddressModal(addr) {
     if (!addressModal || !addressModalBody) return
 
@@ -129,9 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `<div class="address-modal-map"><iframe src="${addr.map_embed_url}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" title="${addr.name} Map"></iframe></div>`
       : ''
 
-    const directionsHref = addr.address_text
-      ? `https://www.google.com/maps/search/${encodeURIComponent(addr.address_text)}`
-      : '#'
+    const coords = extractCoordinates(addr.map_embed_url)
+    const directionsHref = coords
+      ? `https://www.google.com/maps/dir/?api=1&destination=${coords}`
+      : addr.address_text
+        ? `https://www.google.com/maps/search/${encodeURIComponent(addr.address_text)}`
+        : '#'
 
     addressModalBody.innerHTML = `
       <h3 class="address-modal-name">${addr.name}</h3>
