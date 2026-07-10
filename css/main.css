@@ -463,8 +463,6 @@ img { max-width: 100%; display: block; }
   max-width: 200px;
   height: auto;
   margin-bottom: 1.5rem;
-  opacity: 0;
-  transform: translateY(-15px);
   display: block;
 }
 
@@ -479,8 +477,6 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin-bottom: 1.75rem;
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 .hero-title-container {
@@ -502,8 +498,6 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.01em;
   line-height: 1.0;
   color: var(--color-primary);
-  transform: translateY(105%);
-  opacity: 0;
   padding-bottom: 0.1em;
 }
 
@@ -524,16 +518,12 @@ img { max-width: 100%; display: block; }
   margin-bottom: 3rem;
   max-width: 500px;
   line-height: 1.8;
-  transform: translateY(30px);
-  opacity: 0;
 }
 
 .hero-ctas {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  transform: translateY(30px);
-  opacity: 0;
 }
 
 .hero-ctas .btn {
