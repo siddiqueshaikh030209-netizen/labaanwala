@@ -93,8 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     slider.innerHTML = slides.map(slide => `
       <div class="hero-bg-slide${slide.sort_order === 1 ? ' active' : ''}" data-name="${slide.name}">
-        <img src="${slide.image_url || ''}" alt="${slide.name}" class="hero-slide-img"
-          onerror="this.parentElement.style.display='none'">
+        <img src="${slide.image_url || 'assets/images/hero bg/labaanwala logo.jpeg'}" alt="${slide.name}" class="hero-slide-img"
+          onerror="this.src='assets/images/hero bg/labaanwala logo.jpeg'">
       </div>
     `).join('')
 
