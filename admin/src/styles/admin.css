@@ -277,6 +277,12 @@ body {
   flex-wrap: wrap;
 }
 
+.page-header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
 .page-title {
   font-size: 1.75rem;
   font-weight: 700;
@@ -524,6 +530,107 @@ body {
   padding: 0.5rem 1rem;
   font-size: 0.8rem;
   align-self: flex-start;
+}
+
+/* --- CATEGORY CARDS (Menu Management) --- */
+.category-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.category-card {
+  background: var(--color-white);
+  border: 1px solid #E5E7EB;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.category-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.category-card-header:hover {
+  background: var(--color-bg);
+}
+
+.category-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.category-card-count {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+.category-card-actions {
+  display: flex;
+  gap: 0.35rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.category-card-header:hover .category-card-actions {
+  opacity: 1;
+}
+
+.btn-add-sm {
+  width: 30px;
+  height: 30px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-add-sm:hover {
+  background: var(--color-primary-dark);
+}
+
+.category-card-chevron {
+  color: var(--color-text-light);
+  transition: transform 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.category-card-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.category-card-items {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid #E5E7EB;
+}
+
+.category-card-items .table-wrap {
+  margin-top: 0.75rem;
+  border: none;
+  box-shadow: none;
+}
+
+.category-items-empty {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  padding: 1rem 0;
+  text-align: center;
 }
 
 /* --- STORY PREVIEW SLIDER --- */

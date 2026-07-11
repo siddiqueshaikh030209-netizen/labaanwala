@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { supabase } from '../supabase/client'
 
-export default function MenuForm({ item, onClose, onSaved }) {
+export default function MenuForm({ item, preselectedCategory, categories, onClose, onSaved }) {
   const [name, setName] = useState(item?.name || '')
   const [description, setDescription] = useState(item?.description || '')
   const [price, setPrice] = useState(item?.price || '')
-  const [category, setCategory] = useState(item?.category || '')
+  const [categoryId, setCategoryId] = useState(item?.category_id || preselectedCategory || '')
   const [imageUrl, setImageUrl] = useState(item?.image_url || '')
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -42,7 +42,15 @@ export default function MenuForm({ item, onClose, onSaved }) {
     setError('')
     setSaving(true)
 
-    const payload = { name, description, price: price ? Number(price) : null, category: category || null, image_url: imageUrl || null }
+    const selectedCat = categories.find(c => c.id === Number(categoryId))
+    const payload = {
+      name,
+      description,
+      price: price ? Number(price) : null,
+      category: selectedCat ? selectedCat.name : null,
+      category_id: categoryId ? Number(categoryId) : null,
+      image_url: imageUrl || null
+    }
 
     let result
     if (item?.id) {
@@ -87,7 +95,12 @@ export default function MenuForm({ item, onClose, onSaved }) {
             </div>
             <div className="form-group">
               <label>Category</label>
-              <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. Signature" />
+              <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                <option value="">Select category</option>
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
             </div>
           </div>
 
