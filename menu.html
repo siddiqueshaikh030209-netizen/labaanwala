@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Menu | LABAANWALA</title>
+  <meta name="description" content="Browse the complete Labaanwala menu — Signature, Classic, Cakes, Aseeratul and more.">
+  <link rel="icon" type="image/jpeg" href="assets/images/hero%20bg/labaanwala%20logo.jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .full-menu-hero {
+      padding: 8rem 0 3rem;
+      text-align: center;
+      background: var(--color-bg);
+    }
+    .full-menu-hero h1 {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+    .full-menu-hero p {
+      color: var(--color-text-light);
+      font-size: 1.1rem;
+    }
+    .full-menu-section {
+      padding: 3rem 0;
+    }
+    .full-menu-category {
+      margin-bottom: 3rem;
+    }
+    .full-menu-category:last-child {
+      margin-bottom: 0;
+    }
+    .full-menu-category-header {
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--color-primary);
+    }
+    .full-menu-category-header h2 {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--color-primary);
+    }
+    .full-menu-category-header span {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+    }
+    .full-menu-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .full-menu-item {
+      display: flex;
+      gap: 1rem;
+      background: var(--color-secondary);
+      border-radius: var(--border-radius-md);
+      padding: 1rem;
+      border: 1px solid rgba(0,87,184,0.06);
+      transition: var(--transition-smooth);
+    }
+    .full-menu-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,87,184,0.08);
+    }
+    .full-menu-item-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #F3F4F6;
+    }
+    .full-menu-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: darken;
+    }
+    .full-menu-item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .full-menu-item-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .full-menu-item-info p {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .full-menu-item-price {
+      font-weight: 700;
+      color: var(--color-primary);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+    .full-menu-loading {
+      text-align: center;
+      padding: 4rem;
+      color: var(--color-text-light);
+      font-size: 1.1rem;
+    }
+    .full-menu-empty {
+      text-align: center;
+      padding: 4rem;
+      color: var(--color-text-light);
+    }
+    @media (max-width: 1100px) {
+      .full-menu-items { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .full-menu-items { grid-template-columns: 1fr; }
+      .full-menu-hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== HEADER / NAVIGATION ======== -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo" id="nav-logo">
+      </a>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#story" class="nav-link">Our Story</a></li>
+          <li><a href="menu.html" class="nav-link" style="color:var(--color-primary)">Our Menu</a></li>
+          <li><a href="index.html#specialties" class="nav-link">Our Nature</a></li>
+          <li><a href="index.html#location" class="nav-link">Store Location</a></li>
+        </ul>
+      </nav>
+      <div class="nav-cta max-lg:hidden">
+        <a href="menu.html" class="btn btn-primary" style="padding: 0.65rem 1.5rem; font-size: 0.82rem;">Our Menu</a>
+      </div>
+      <button class="hamburger" aria-label="Toggle Navigation" id="mobile-nav-toggle" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="full-menu-hero">
+    <div class="container">
+      <h1>Our Full Menu</h1>
+      <p>Explore every dessert we offer, organized by category</p>
+    </div>
+  </section>
+
+  <section class="full-menu-section">
+    <div class="container">
+      <div id="full-menu-container">
+        <div class="full-menu-loading">Loading menu...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="section footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/images/hero bg/labaanwala logo.jpeg" alt="Labaanwala" class="footer-logo" loading="lazy">
+          <p class="footer-tagline">Pune's first Egyptian dessert experience — rich, creamy, and crafted with tradition.</p>
+          <div class="footer-social">
+            <a href="https://instagram.com/labaanwalapune" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/919730738285" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div>
+          <span class="footer-heading">Quick Links</span>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="index.html#story" class="footer-link">Our Story</a></li>
+            <li><a href="menu.html" class="footer-link">Our Menu</a></li>
+            <li><a href="index.html#specialties" class="footer-link">Our Nature</a></li>
+            <li><a href="index.html#location" class="footer-link">Store Location</a></li>
+          </ul>
+        </div>
+        <div>
+          <span class="footer-heading">Store Details</span>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div>Shop No 1, Bhagwat Sankul, Salunke Vihar Rd, Kondhwa, Pune 411048</div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div>
+            <div><a href="tel:+919730738285" style="color: inherit;">+91 97307 38285</a></div>
+          </div>
+          <div class="footer-contact-item">
+            <div class="footer-contact-icon"><i class="fa-brands fa-instagram"></i></div>
+            <div><a href="https://instagram.com/labaanwalapune" target="_blank" rel="noopener noreferrer" style="color: inherit;">@labaanwalapune</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 LABAANWALA Pune. All Rights Reserved.</div>
+        <div>Designed with &hearts; for Pune's dessert lovers.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======== FLOATING WHATSAPP ======== -->
+  <div class="floating-container">
+    <a href="https://wa.me/919730738285" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Order on WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const supabaseUrl = 'https://lcxiruybhhvbyrvugzsr.supabase.co'
+      const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjeGlydXliaGh2YnlydnVnenNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1ODk1MTIsImV4cCI6MjA5OTE2NTUxMn0.J0_b_GHA4Rm8UqiFXpIBwzyLcXaOiK0e-Qm4vMTEm7g'
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey)
+
+      const container = document.getElementById('full-menu-container')
+
+      async function loadFullMenu() {
+        const [catResult, itemResult] = await Promise.all([
+          supabase.from('categories').select('*').order('sort_order', { ascending: true }),
+          supabase.from('menu_items').select('*').order('id', { ascending: true })
+        ])
+
+        if (catResult.error || itemResult.error) {
+          container.innerHTML = '<div class="full-menu-empty">Failed to load menu. Please try again later.</div>'
+          return
+        }
+
+        const categories = catResult.data || []
+        const items = itemResult.data || []
+
+        if (categories.length === 0) {
+          container.innerHTML = '<div class="full-menu-empty">No categories available yet.</div>'
+          return
+        }
+
+        container.innerHTML = categories.map(cat => {
+          const catItems = items.filter(i => i.category_id === cat.id)
+          if (catItems.length === 0) return ''
+
+          return `
+            <div class="full-menu-category">
+              <div class="full-menu-category-header">
+                <h2>${cat.name}</h2>
+                <span>${catItems.length} item${catItems.length > 1 ? 's' : ''}</span>
+              </div>
+              <div class="full-menu-items">
+                ${catItems.map(item => `
+                  <div class="full-menu-item">
+                    <div class="full-menu-item-img">
+                      ${item.image_url
+                        ? `<img src="${item.image_url}" alt="${item.name}" loading="lazy" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-image\\' style=\\'font-size:1.5rem;color:#D1D5DB;display:flex;align-items:center;justify-content:center;height:100%;\\'></i>'">`
+                        : `<i class="fa-solid fa-image" style="font-size:1.5rem;color:#D1D5DB;display:flex;align-items:center;justify-content:center;height:100%;"></i>`
+                      }
+                    </div>
+                    <div class="full-menu-item-info">
+                      <h3>${item.name}</h3>
+                      <p>${item.description}</p>
+                      ${item.price ? `<div class="full-menu-item-price">₹${item.price}</div>` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `
+        }).join('')
+      }
+
+      loadFullMenu()
+
+      // Mobile nav
+      const hamburger = document.getElementById('mobile-nav-toggle')
+      const navMenu = document.getElementById('nav-menu')
+      const navOverlay = document.getElementById('nav-overlay')
+
+      function openMenu() {
+        hamburger.classList.add('active')
+        navMenu.classList.add('active')
+        navOverlay.classList.add('active')
+        hamburger.setAttribute('aria-expanded', 'true')
+        document.body.style.overflow = 'hidden'
+      }
+
+      function closeMenu() {
+        hamburger.classList.remove('active')
+        navMenu.classList.remove('active')
+        navOverlay.classList.remove('active')
+        hamburger.setAttribute('aria-expanded', 'false')
+        document.body.style.overflow = ''
+      }
+
+      hamburger?.addEventListener('click', () => {
+        navMenu.classList.contains('active') ? closeMenu() : openMenu()
+      })
+
+      navOverlay?.addEventListener('click', closeMenu)
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', closeMenu)
+      })
+
+      // Header scroll class
+      const header = document.querySelector('.header')
+      window.addEventListener('scroll', () => {
+        header?.classList.toggle('scrolled', window.scrollY > 50)
+      }, { passive: true })
+    })
+  </script>
+</body>
+</html>
