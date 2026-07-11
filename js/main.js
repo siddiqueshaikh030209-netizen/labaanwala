@@ -14,16 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================
      DATA FETCHING
   ============================= */
+  async function fetchHeroSlides() {
+    const { data, error } = await supabase
+      .from('hero_slides')
+      .select('*')
+      .order('sort_order', { ascending: true })
+    if (error) { console.error('Failed to load hero slides:', error); return [] }
+    return data || []
+  }
+
+  async function fetchStoryImages() {
+    const { data, error } = await supabase
+      .from('story_images')
+      .select('*')
+      .order('sort_order', { ascending: true })
+    if (error) { console.error('Failed to load story images:', error); return [] }
+    return data || []
+  }
+
+  async function fetchCategories() {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('sort_order', { ascending: true })
+    if (error) { console.error('Failed to load categories:', error); return [] }
+    return data || []
+  }
+
   async function fetchMenuItems() {
     const { data, error } = await supabase
       .from('menu_items')
       .select('*')
       .order('id', { ascending: true })
-
-    if (error) {
-      console.error('Failed to load menu items:', error)
-      return []
-    }
+    if (error) { console.error('Failed to load menu items:', error); return [] }
     return data || []
   }
 
@@ -33,51 +56,309 @@ document.addEventListener('DOMContentLoaded', () => {
       .select('*')
       .order('is_primary', { ascending: false })
       .order('id', { ascending: true })
-
-    if (error) {
-      console.error('Failed to load addresses:', error)
-      return []
-    }
+    if (error) { console.error('Failed to load addresses:', error); return [] }
     return data || []
   }
 
   async function fetchAndRenderAll() {
-    const [menuItems, addresses] = await Promise.all([
+    const [heroSlides, storyImages, categories, menuItems, addresses] = await Promise.all([
+      fetchHeroSlides(),
+      fetchStoryImages(),
+      fetchCategories(),
       fetchMenuItems(),
       fetchAddresses()
     ])
 
-    renderMenuCards(menuItems)
+    renderHeroSlides(heroSlides)
+    renderStoryGallery(storyImages)
+    renderCategoryCards(categories, menuItems)
     renderAddressCards(addresses)
     dataLoaded = true
     menuRenderResolve()
   }
 
   /* =============================
-     RENDER MENU CARDS
+     RENDER HERO SLIDER
   ============================= */
-  function renderMenuCards(items) {
-    const grid = document.getElementById('menu-grid')
+  let heroSlideData = []
+  let currentHeroSlide = 0
+  let heroTimer
+
+  function renderHeroSlides(slides) {
+    heroSlideData = slides
+    const slider = document.getElementById('hero-slider')
+    const dotsContainer = document.getElementById('hero-dots')
+    const slideLabel = document.getElementById('hero-slide-label')
+    if (!slider) return
+
+    slider.innerHTML = slides.map(slide => `
+      <div class="hero-bg-slide${slide.sort_order === 1 ? ' active' : ''}" data-name="${slide.name}">
+        <img src="${slide.image_url || ''}" alt="${slide.name}" class="hero-slide-img"
+          onerror="this.parentElement.style.display='none'">
+      </div>
+    `).join('')
+
+    if (dotsContainer) {
+      dotsContainer.innerHTML = slides.map((s, i) => `
+        <button class="hero-slide-dot${i === 0 ? ' active' : ''}" aria-label="Go to slide ${i + 1}"></button>
+      `).join('')
+
+      dotsContainer.querySelectorAll('.hero-slide-dot').forEach((dot, i) => {
+        dot.addEventListener('click', () => goToHeroSlide(i))
+      })
+    }
+
+    if (slideLabel && slides.length > 0) {
+      slideLabel.textContent = slides[0]?.name || ''
+    }
+
+    const firstImg = slider.querySelector('.hero-bg-slide.active .hero-slide-img')
+    if (firstImg) {
+      requestAnimationFrame(() => {
+        firstImg.style.opacity = '1'
+        firstImg.style.transform = 'scale(1)'
+      })
+    }
+
+    if (slides.length > 1) {
+      startHeroTimer()
+      const showcase = document.getElementById('hero-showcase')
+      if (showcase) {
+        showcase.addEventListener('mouseenter', stopHeroTimer)
+        showcase.addEventListener('mouseleave', startHeroTimer)
+      }
+    }
+  }
+
+  function goToHeroSlide(index) {
+    if (currentHeroSlide === index) return
+    const slides = document.querySelectorAll('.hero-bg-slide')
+    const dots = document.querySelectorAll('.hero-slide-dot')
+    const slideLabel = document.getElementById('hero-slide-label')
+    if (!slides.length) return
+
+    const currentImg = slides[currentHeroSlide]?.querySelector('.hero-slide-img')
+    if (currentImg) {
+      currentImg.style.opacity = '0'
+      currentImg.style.transform = 'scale(0.5)'
+    }
+    slides[currentHeroSlide]?.classList.remove('active')
+    dots[currentHeroSlide]?.classList.remove('active')
+
+    currentHeroSlide = index
+    slides[currentHeroSlide]?.classList.add('active')
+    dots[currentHeroSlide]?.classList.add('active')
+
+    if (slideLabel) {
+      slideLabel.textContent = heroSlideData[currentHeroSlide]?.name || ''
+    }
+
+    const nextImg = slides[currentHeroSlide]?.querySelector('.hero-slide-img')
+    if (nextImg) {
+      requestAnimationFrame(() => {
+        nextImg.style.opacity = '1'
+        nextImg.style.transform = 'scale(1)'
+      })
+    }
+  }
+
+  function advanceHeroSlide() {
+    if (heroSlideData.length === 0) return
+    const next = (currentHeroSlide + 1) % heroSlideData.length
+    goToHeroSlide(next)
+  }
+
+  function startHeroTimer() {
+    stopHeroTimer()
+    heroTimer = setInterval(advanceHeroSlide, 3000)
+  }
+
+  function stopHeroTimer() {
+    if (heroTimer) clearInterval(heroTimer)
+  }
+
+  /* =============================
+     RENDER STORY GALLERY
+  ============================= */
+  function renderStoryGallery(images) {
+    const wrap = document.getElementById('story-image-wrap')
+    if (!wrap) return
+
+    if (images.length === 0) return
+
+    if (images.length === 1) {
+      wrap.innerHTML = `<img src="${images[0].image_url}" alt="Labaanwala Dessert Lounge" class="story-img" loading="lazy">`
+      return
+    }
+
+    wrap.innerHTML = `
+      <div class="story-gallery">
+        <div class="story-gallery-track" id="story-gallery-track">
+          ${images.map(img => `
+            <div class="story-gallery-slide">
+              <img src="${img.image_url}" alt="Labaanwala" loading="lazy">
+            </div>
+          `).join('')}
+        </div>
+        <button class="story-gallery-btn story-gallery-prev" id="story-gallery-prev" aria-label="Previous">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="story-gallery-btn story-gallery-next" id="story-gallery-next" aria-label="Next">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div class="story-gallery-dots" id="story-gallery-dots">
+          ${images.map((_, i) => `<button class="story-gallery-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`).join('')}
+        </div>
+      </div>
+    `
+
+    let currentStoryIndex = 0
+    const track = document.getElementById('story-gallery-track')
+    const dots = document.querySelectorAll('.story-gallery-dot')
+    const prevBtn = document.getElementById('story-gallery-prev')
+    const nextBtn = document.getElementById('story-gallery-next')
+
+    function goToStorySlide(index) {
+      if (!track) return
+      currentStoryIndex = index
+      track.style.transform = `translateX(-${index * 100}%)`
+      dots.forEach((d, i) => d.classList.toggle('active', i === index))
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => goToStorySlide(Number(dot.dataset.index)))
+    })
+
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+      goToStorySlide((currentStoryIndex - 1 + images.length) % images.length)
+    })
+
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+      goToStorySlide((currentStoryIndex + 1) % images.length)
+    })
+  }
+
+  /* =============================
+     RENDER CATEGORY CARDS
+  ============================= */
+  let categoryTimers = {}
+
+  function renderCategoryCards(categories, items) {
+    const grid = document.getElementById('category-grid')
     if (!grid) return
 
-    grid.innerHTML = items.map(item => {
-      const imgSrc = item.image_url || `assets/images/hero bg/${item.name}.jpeg`
-      return `
-        <div class="menu-card">
-          <div class="menu-img-wrap">
-            <img src="${imgSrc}" alt="${item.name}" class="menu-img" loading="lazy"
-              onerror="this.src='assets/images/hero bg/labaanwala logo.jpeg'">
-          </div>
-          <div class="menu-details">
-            <div class="menu-header">
-              <h3 class="menu-card-title">${item.name}</h3>
-              ${item.price ? `<span class="menu-price">₹${item.price}</span>` : ''}
+    if (categories.length === 0) {
+      grid.innerHTML = '<p class="products-desc" style="grid-column:1/-1">No categories available yet.</p>'
+      return
+    }
+
+    grid.innerHTML = categories.map(cat => {
+      const catItems = items.filter(i => i.category_id === cat.id)
+      const images = catItems.filter(i => i.image_url).map(i => i.image_url)
+
+      if (images.length === 0) {
+        return `
+          <div class="category-card-item" data-category-id="${cat.id}">
+            <div class="category-card-item-header">
+              <h3 class="category-card-item-name">${cat.name}</h3>
             </div>
-            <p class="menu-desc">${item.description}</p>
+            <div class="category-card-item-body">
+              <p class="category-card-item-empty">Menu items coming soon</p>
+            </div>
+          </div>
+        `
+      }
+
+      return `
+        <div class="category-card-item" data-category-id="${cat.id}">
+          <div class="category-card-item-header">
+            <h3 class="category-card-item-name">${cat.name}</h3>
+            <span class="category-card-item-count">${catItems.length} item${catItems.length > 1 ? 's' : ''}</span>
+          </div>
+          <div class="category-card-slider" data-images='${JSON.stringify(images)}'>
+            <div class="category-slider-track">
+              ${images.map(url => `
+                <div class="category-slide">
+                  <img src="${url}" alt="${cat.name}" loading="lazy">
+                </div>
+              `).join('')}
+            </div>
+            <button class="category-slider-btn category-slider-prev" aria-label="Previous">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="category-slider-btn category-slider-next" aria-label="Next">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+            <div class="category-slider-dots">
+              ${images.map((_, i) => `<button class="category-slider-dot${i === 0 ? ' active' : ''}"></button>`).join('')}
+            </div>
           </div>
         </div>
       `
     }).join('')
+
+    initCategorySliders()
+  }
+
+  function initCategorySliders() {
+    document.querySelectorAll('.category-card-item').forEach(card => {
+      const sliderEl = card.querySelector('.category-card-slider')
+      if (!sliderEl) return
+
+      let images = []
+      try { images = JSON.parse(sliderEl.dataset.images) } catch(e) { return }
+      if (images.length < 2) return
+
+      const track = sliderEl.querySelector('.category-slider-track')
+      const dots = sliderEl.querySelectorAll('.category-slider-dot')
+      const prevBtn = sliderEl.querySelector('.category-slider-prev')
+      const nextBtn = sliderEl.querySelector('.category-slider-next')
+      let currentIndex = 0
+      let autoTimer
+
+      function goToSlide(index) {
+        currentIndex = index
+        track.style.transform = `translateX(-${index * 100}%)`
+        dots.forEach((d, i) => d.classList.toggle('active', i === index))
+      }
+
+      function advance() {
+        goToSlide((currentIndex + 1) % images.length)
+      }
+
+      function startAuto() {
+        stopAuto()
+        autoTimer = setInterval(advance, 4000)
+      }
+
+      function stopAuto() {
+        if (autoTimer) clearInterval(autoTimer)
+      }
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          goToSlide(Number(dot.dataset.index))
+          startAuto()
+        })
+      })
+
+      if (prevBtn) prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation()
+        goToSlide((currentIndex - 1 + images.length) % images.length)
+        startAuto()
+      })
+
+      if (nextBtn) nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation()
+        goToSlide((currentIndex + 1) % images.length)
+        startAuto()
+      })
+
+      card.addEventListener('mouseenter', stopAuto)
+      card.addEventListener('mouseleave', startAuto)
+
+      startAuto()
+    })
   }
 
   /* =============================
@@ -234,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const navOverlay = document.getElementById('nav-overlay');
   const navLinks = document.querySelectorAll('.nav-link');
 
-  // Scroll-based header style
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
       header.classList.add('scrolled');
@@ -243,7 +523,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  // Toggle mobile menu
   function openMenu() {
     hamburger.classList.add('active');
     navMenu.classList.add('active');
@@ -261,11 +540,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   hamburger.addEventListener('click', () => {
-    if (navMenu.classList.contains('active')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
+    if (navMenu.classList.contains('active')) closeMenu()
+    else openMenu()
   });
 
   navOverlay.addEventListener('click', closeMenu);
@@ -273,88 +549,6 @@ document.addEventListener('DOMContentLoaded', () => {
   navLinks.forEach(link => {
     link.addEventListener('click', closeMenu);
   });
-
-
-  /* =============================
-     HERO SHOWCASE SLIDER
-  ============================= */
-  const heroSlides = document.querySelectorAll('.hero-bg-slide');
-  const dotsContainer = document.getElementById('hero-dots');
-  const slideLabel = document.getElementById('hero-slide-label');
-  let currentHeroSlide = 0;
-  let heroTimer;
-
-  const dots = [];
-  heroSlides.forEach((slide, i) => {
-    const dot = document.createElement('button');
-    dot.classList.add('hero-slide-dot');
-    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-    if (i === 0) dot.classList.add('active');
-    dot.addEventListener('click', () => goToSlide(i));
-    dotsContainer.appendChild(dot);
-    dots.push(dot);
-  });
-
-  if (heroSlides.length > 0) {
-    const firstImg = heroSlides[0].querySelector('.hero-slide-img');
-    if (firstImg) {
-      requestAnimationFrame(() => {
-        firstImg.style.opacity = '1';
-        firstImg.style.transform = 'scale(1)';
-      });
-    }
-  }
-
-  function goToSlide(index) {
-    if (currentHeroSlide === index) return;
-
-    const currentImg = heroSlides[currentHeroSlide].querySelector('.hero-slide-img');
-    if (currentImg) {
-      currentImg.style.opacity = '0';
-      currentImg.style.transform = 'scale(0.5)';
-    }
-    heroSlides[currentHeroSlide].classList.remove('active');
-    if (dots[currentHeroSlide]) dots[currentHeroSlide].classList.remove('active');
-
-    currentHeroSlide = index;
-    heroSlides[currentHeroSlide].classList.add('active');
-    if (dots[currentHeroSlide]) dots[currentHeroSlide].classList.add('active');
-
-    if (slideLabel) {
-      slideLabel.textContent = heroSlides[currentHeroSlide].dataset.name || '';
-    }
-
-    const nextImg = heroSlides[currentHeroSlide].querySelector('.hero-slide-img');
-    if (nextImg) {
-      requestAnimationFrame(() => {
-        nextImg.style.opacity = '1';
-        nextImg.style.transform = 'scale(1)';
-      });
-    }
-  }
-
-  function advanceSlide() {
-    const next = (currentHeroSlide + 1) % heroSlides.length;
-    goToSlide(next);
-  }
-
-  function startHeroTimer() {
-    heroTimer = setInterval(advanceSlide, 2500);
-  }
-
-  function stopHeroTimer() {
-    clearInterval(heroTimer);
-  }
-
-  if (heroSlides.length > 1) {
-    startHeroTimer();
-    const showcase = document.getElementById('hero-showcase');
-    if (showcase) {
-      showcase.addEventListener('mouseenter', stopHeroTimer);
-      showcase.addEventListener('mouseleave', startHeroTimer);
-    }
-  }
-
 
   /* =============================
      LIGHTBOX — MENU CARD IMAGES
@@ -427,7 +621,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowRight') showNextImage();
     if (e.key === 'ArrowLeft') showPrevImage();
   });
-
 
   /* =============================
      ACTIVE NAV LINK HIGHLIGHT
