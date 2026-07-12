@@ -13,6 +13,8 @@ export default function MenuManagement() {
   const [preselectedCategory, setPreselectedCategory] = useState(null)
   const [newCategoryName, setNewCategoryName] = useState('')
   const [savingCategory, setSavingCategory] = useState(false)
+  const [editingCategory, setEditingCategory] = useState(null)
+  const [editCategoryName, setEditCategoryName] = useState('')
 
   async function loadData() {
     setLoading(true)
@@ -59,6 +61,20 @@ export default function MenuManagement() {
     setNewCategoryName('')
     setSavingCategory(false)
     setShowCategoryForm(false)
+    loadData()
+  }
+
+  function handleEditCategory(cat) {
+    setEditingCategory(cat)
+    setEditCategoryName(cat.name)
+  }
+
+  async function handleUpdateCategory(e) {
+    e.preventDefault()
+    if (!editCategoryName.trim()) return
+    await supabase.from('categories').update({ name: editCategoryName.trim() }).eq('id', editingCategory.id)
+    setEditingCategory(null)
+    setEditCategoryName('')
     loadData()
   }
 
@@ -131,6 +147,37 @@ export default function MenuManagement() {
         </div>
       )}
 
+      {editingCategory && (
+        <div className="modal-overlay" onClick={() => setEditingCategory(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}
+               style={{ maxWidth: '400px' }}>
+            <div className="modal-header">
+              <h2>Edit Category</h2>
+              <button className="modal-close" onClick={() => setEditingCategory(null)}>
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <form onSubmit={handleUpdateCategory} className="modal-form">
+              <div className="form-group">
+                <label>Category Name</label>
+                <input
+                  type="text"
+                  value={editCategoryName}
+                  onChange={(e) => setEditCategoryName(e.target.value)}
+                  placeholder="e.g. Signature"
+                  required
+                  autoFocus
+                />
+              </div>
+              <div className="form-actions">
+                <button type="button" className="btn btn-secondary" onClick={() => setEditingCategory(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {categories.length === 0 ? (
         <p className="empty-text">No categories yet. Click "Add Category" to create one.</p>
       ) : (
@@ -146,6 +193,9 @@ export default function MenuManagement() {
                     <span className="category-card-count">{catItems.length} item{catItems.length !== 1 ? 's' : ''}</span>
                   </div>
                   <div className="category-card-actions" onClick={(e) => e.stopPropagation()}>
+                    <button className="btn-icon btn-edit btn-icon-sm" onClick={() => handleEditCategory(cat)} title="Edit category name">
+                      <i className="fa-solid fa-pen"></i>
+                    </button>
                     <button className="btn-icon btn-add-sm" onClick={() => handleAddItem(cat.id)} title="Add item to this category">
                       <i className="fa-solid fa-plus"></i>
                     </button>

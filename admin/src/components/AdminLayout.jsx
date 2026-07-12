@@ -15,6 +15,7 @@ export default function AdminLayout() {
     { to: '/', icon: 'fa-chart-pie', label: 'Dashboard', end: true },
     { to: '/menu', icon: 'fa-utensils', label: 'Menu' },
     { to: '/addresses', icon: 'fa-location-dot', label: 'Addresses' },
+    { to: '/menu-cards', icon: 'fa-rectangle-ad', label: 'Menu Cards' },
   ]
 
   return (

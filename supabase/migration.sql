@@ -84,3 +84,39 @@ CREATE POLICY "Auth upload story-images"
 DROP POLICY IF EXISTS "Auth delete story-images" ON storage.objects;
 CREATE POLICY "Auth delete story-images"
   ON storage.objects FOR DELETE USING (auth.role() = 'authenticated');
+
+-- =============================
+-- MENU CARDS TABLE
+-- =============================
+CREATE TABLE IF NOT EXISTS menu_cards (
+  id BIGSERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  image_url TEXT,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE menu_cards ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read menu_cards" ON menu_cards;
+CREATE POLICY "Public read menu_cards"
+  ON menu_cards FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Auth all menu_cards" ON menu_cards;
+CREATE POLICY "Auth all menu_cards"
+  ON menu_cards FOR ALL USING (auth.role() = 'authenticated');
+
+-- STORAGE BUCKET
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('menu-card-images', 'menu-card-images', true)
+ON CONFLICT (id) DO NOTHING;
+
+DROP POLICY IF EXISTS "Public read menu-card-images" ON storage.objects;
+CREATE POLICY "Public read menu-card-images"
+  ON storage.objects FOR SELECT USING (bucket_id = 'menu-card-images');
+DROP POLICY IF EXISTS "Auth upload menu-card-images" ON storage.objects;
+CREATE POLICY "Auth upload menu-card-images"
+  ON storage.objects FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+DROP POLICY IF EXISTS "Auth delete menu-card-images" ON storage.objects;
+CREATE POLICY "Auth delete menu-card-images"
+  ON storage.objects FOR DELETE USING (auth.role() = 'authenticated');

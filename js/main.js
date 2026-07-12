@@ -60,18 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return data || []
   }
 
+  async function fetchMenuCards() {
+    const { data, error } = await supabase
+      .from('menu_cards')
+      .select('*')
+      .order('sort_order', { ascending: true })
+    if (error) { console.error('Failed to load menu cards:', error); return [] }
+    return data || []
+  }
+
   async function fetchAndRenderAll() {
-    const [heroSlides, storyImages, categories, menuItems, addresses] = await Promise.all([
+    const [heroSlides, storyImages, categories, menuItems, addresses, menuCards] = await Promise.all([
       fetchHeroSlides(),
       fetchStoryImages(),
       fetchCategories(),
       fetchMenuItems(),
-      fetchAddresses()
+      fetchAddresses(),
+      fetchMenuCards()
     ])
 
     renderHeroSlides(heroSlides)
     renderStoryGallery(storyImages)
     renderCategoryCards(categories, menuItems)
+    renderMenuCards(menuCards)
     renderAddressCards(addresses)
     dataLoaded = true
     menuRenderResolve()
@@ -269,13 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
         `
       }
 
+      const safeImages = images.map(u => encodeURIComponent(u))
+
       return `
         <div class="category-card-item" data-category-id="${cat.id}">
           <div class="category-card-item-header">
             <h3 class="category-card-item-name">${cat.name}</h3>
             <span class="category-card-item-count">${catItems.length} item${catItems.length > 1 ? 's' : ''}</span>
           </div>
-          <div class="category-card-slider" data-images='${JSON.stringify(images)}'>
+          <div class="category-card-slider" data-images='${JSON.stringify(safeImages)}'>
             <div class="category-slider-track">
               ${images.map(url => `
                 <div class="category-slide">
@@ -283,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
               `).join('')}
             </div>
+            ${images.length > 1 ? `
             <button class="category-slider-btn category-slider-prev" aria-label="Previous">
               <i class="fa-solid fa-chevron-left"></i>
             </button>
@@ -290,8 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <i class="fa-solid fa-chevron-right"></i>
             </button>
             <div class="category-slider-dots">
-              ${images.map((_, i) => `<button class="category-slider-dot${i === 0 ? ' active' : ''}"></button>`).join('')}
+              ${images.map((_, i) => `<button class="category-slider-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`).join('')}
             </div>
+            ` : ''}
           </div>
         </div>
       `
@@ -306,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!sliderEl) return
 
       let images = []
-      try { images = JSON.parse(sliderEl.dataset.images) } catch(e) { return }
+      try { images = JSON.parse(sliderEl.dataset.images).map(u => decodeURIComponent(u)) } catch(e) { return }
       if (images.length < 2) return
 
       const track = sliderEl.querySelector('.category-slider-track')
@@ -359,6 +374,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
       startAuto()
     })
+  }
+
+  /* =============================
+     RENDER MENU CARDS
+  ============================= */
+  function renderMenuCards(cards) {
+    const section = document.getElementById('menu-cards-section')
+    const grid = document.getElementById('menu-cards-grid')
+    if (!section || !grid) return
+
+    if (cards.length === 0) {
+      section.style.display = 'none'
+      return
+    }
+
+    section.style.display = ''
+
+    grid.innerHTML = cards.map(card => `
+      <div class="menu-image-card">
+        <img src="${card.image_url}" alt="${card.title}" class="menu-card-img" loading="lazy"
+             onerror="this.closest('.menu-image-card')?.classList.add('card-hidden')">
+        <div class="menu-image-overlay">
+          <i class="fa-solid fa-magnifying-glass-plus"></i>
+          <span>View Full Menu</span>
+        </div>
+      </div>
+    `).join('')
   }
 
   /* =============================

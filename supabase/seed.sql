@@ -48,6 +48,12 @@ INSERT INTO story_images (image_url, sort_order) VALUES
 ('assets/images/story/WhatsApp Image 2026-07-06 at 23.40.41.jpeg', 1)
 ON CONFLICT DO NOTHING;
 
+-- SEED MENU CARDS (skip if already exists)
+INSERT INTO menu_cards (title, image_url, sort_order) VALUES
+('Menu Page 1', 'assets/images/menu/WhatsApp Image 2026-06-29 at 22.43.43.jpeg', 1),
+('Menu Page 2', 'assets/images/menu/WhatsApp Image 2026-06-29 at 22.43.44.jpeg', 2)
+ON CONFLICT DO NOTHING;
+
 -- SEED ADDRESSES (skip if already exists)
 INSERT INTO addresses (name, phone, address_text, map_embed_url, is_primary)
 SELECT 'Main Store – Kondhwa', '+91 97307 38285', 'Shop No 1, Bhagwat Sankul, Salunke Vihar Rd, Opp. B G Lonkar Road, Kondhwa, Pune, Maharashtra 411048', 'https://maps.google.com/maps?q=Shop+No+1,+Bhagwat+Sankul,+Salunke+Vihar+Rd,+Kondhwa,+Pune,+Maharashtra+411048&t=&z=16&ie=UTF8&iwloc=&output=embed', true

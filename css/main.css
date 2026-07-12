@@ -1189,6 +1189,10 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.1em;
 }
 
+.menu-image-card.card-hidden {
+  display: none;
+}
+
 /* --- OUR NATURE SECTION --- */
 .specialties {
   background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
