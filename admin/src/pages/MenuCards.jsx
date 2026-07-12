@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../supabase/client'
+import { supabase, resolveImageUrl } from '../supabase/client'
 
 export default function MenuCards() {
   const [cards, setCards] = useState([])
@@ -160,7 +160,8 @@ export default function MenuCards() {
             <div key={card.id} className="menu-card-item">
               <div className="menu-card-thumb">
                 {card.image_url ? (
-                  <img src={card.image_url} alt={card.title} />
+                  <img src={resolveImageUrl(card.image_url)} alt={card.title}
+                       onerror="this.style.display='none'" />
                 ) : (
                   <div className="menu-card-thumb-placeholder">
                     <i className="fa-solid fa-image"></i>

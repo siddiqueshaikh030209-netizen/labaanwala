@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../supabase/client'
+import { supabase, resolveImageUrl } from '../supabase/client'
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ menuItems: 0, addresses: 0 })
@@ -191,7 +191,7 @@ export default function Dashboard() {
               <div key={slide.id} className="panel-list-item">
                 <div className="panel-list-thumb">
                   {slide.image_url ? (
-                    <img src={slide.image_url} alt={slide.name} />
+                    <img src={resolveImageUrl(slide.image_url)} alt={slide.name} />
                   ) : (
                     <div className="panel-thumb-placeholder"><i className="fa-solid fa-image"></i></div>
                   )}
@@ -238,7 +238,7 @@ export default function Dashboard() {
                     key={img.id}
                     className={`story-preview-slide ${i === storySlideIndex ? 'active' : ''}`}
                   >
-                    <img src={img.image_url} alt={`Story ${i + 1}`} />
+                    <img src={resolveImageUrl(img.image_url)} alt={`Story ${i + 1}`} />
                     <button className="btn-icon btn-delete btn-icon-overlay" onClick={() => handleDeleteStoryImage(img.id)} title="Delete">
                       <i className="fa-solid fa-trash"></i>
                     </button>

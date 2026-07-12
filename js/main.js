@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================
      RENDER CATEGORY CARDS
   ============================= */
-  let categoryTimers = {}
+  const categoryImages = new Map()
 
   function renderCategoryCards(categories, items) {
     const grid = document.getElementById('category-grid')
@@ -266,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.innerHTML = categories.map(cat => {
       const catItems = items.filter(i => i.category_id === cat.id)
       const images = catItems.filter(i => i.image_url).map(i => i.image_url)
+      categoryImages.set(cat.id, images)
 
       if (images.length === 0) {
         return `
@@ -280,15 +281,13 @@ document.addEventListener('DOMContentLoaded', () => {
         `
       }
 
-      const safeImages = images.map(u => encodeURIComponent(u))
-
       return `
         <div class="category-card-item" data-category-id="${cat.id}">
           <div class="category-card-item-header">
             <h3 class="category-card-item-name">${cat.name}</h3>
             <span class="category-card-item-count">${catItems.length} item${catItems.length > 1 ? 's' : ''}</span>
           </div>
-          <div class="category-card-slider" data-images='${JSON.stringify(safeImages)}'>
+          <div class="category-card-slider">
             <div class="category-slider-track">
               ${images.map(url => `
                 <div class="category-slide">
@@ -317,12 +316,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initCategorySliders() {
     document.querySelectorAll('.category-card-item').forEach(card => {
+      const catId = Number(card.dataset.categoryId)
+      const images = categoryImages.get(catId) || []
+      if (images.length < 2) return
       const sliderEl = card.querySelector('.category-card-slider')
       if (!sliderEl) return
-
-      let images = []
-      try { images = JSON.parse(sliderEl.dataset.images).map(u => decodeURIComponent(u)) } catch(e) { return }
-      if (images.length < 2) return
 
       const track = sliderEl.querySelector('.category-slider-track')
       const dots = sliderEl.querySelectorAll('.category-slider-dot')

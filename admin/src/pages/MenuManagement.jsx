@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../supabase/client'
+import { supabase, resolveImageUrl } from '../supabase/client'
 import MenuForm from '../components/MenuForm'
 
 export default function MenuManagement() {
@@ -227,7 +227,8 @@ export default function MenuManagement() {
                               <tr key={item.id}>
                                 <td>
                                   {item.image_url ? (
-                                    <img src={item.image_url} alt={item.name} className="table-thumb" />
+                                    <img src={resolveImageUrl(item.image_url)} alt={item.name} className="table-thumb"
+                                         onerror="this.style.display='none'" />
                                   ) : (
                                     <div className="table-thumb-placeholder">
                                       <i className="fa-solid fa-image"></i>
