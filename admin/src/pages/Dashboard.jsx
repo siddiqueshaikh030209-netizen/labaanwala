@@ -129,6 +129,7 @@ export default function Dashboard() {
       await supabase.storage.from('story-images').remove([path])
     }
     await supabase.from('story_images').delete().eq('id', id)
+    loadStoryImages()
   }
 
   return (
