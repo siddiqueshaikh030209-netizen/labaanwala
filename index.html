@@ -314,6 +314,159 @@
     </div>
   </section>
 
+  <!-- ======== CUSTOMER REVIEWS ======== -->
+  <section class="section customer-reviews" id="reviews">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">What Our Customers Say</span>
+        <h2 class="section-title text-blue">Customer Reviews</h2>
+      </div>
+
+      <p class="products-desc">
+        Real feedback from our valued customers. We love hearing about your experience!
+      </p>
+
+      <!-- Reviews Display -->
+      <div class="reviews-grid" id="reviews-grid">
+        <!-- Dynamically populated from Supabase -->
+      </div>
+
+      <!-- Review Submission Form -->
+      <div class="review-form-wrap">
+        <h3 class="review-form-title">Share Your Experience</h3>
+        <form class="review-form" id="review-form">
+          <div class="review-form-row">
+            <div class="form-group">
+              <label for="review-name">Your Name</label>
+              <input type="text" id="review-name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+              <label for="review-rating">Rating</label>
+              <div class="rating-input" id="rating-input">
+                <i class="fa-solid fa-star rating-star" data-rating="1"></i>
+                <i class="fa-solid fa-star rating-star" data-rating="2"></i>
+                <i class="fa-solid fa-star rating-star" data-rating="3"></i>
+                <i class="fa-solid fa-star rating-star" data-rating="4"></i>
+                <i class="fa-solid fa-star rating-star" data-rating="5"></i>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="review-comment">Your Review</label>
+            <textarea id="review-comment" rows="4" placeholder="Tell us about your experience..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" id="review-submit-btn">
+            <i class="fa-solid fa-paper-plane"></i> Submit Review
+          </button>
+          <div class="review-form-message" id="review-form-message"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== GOOGLE REVIEWS ======== -->
+  <section class="section google-reviews" id="google-reviews">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">Trusted By Thousands</span>
+        <h2 class="section-title text-blue">Google Reviews</h2>
+      </div>
+
+      <div class="google-reviews-header">
+        <div class="google-rating-badge">
+          <i class="fa-brands fa-google google-icon"></i>
+          <span class="google-rating-number">4.8</span>
+          <div class="google-rating-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <span class="google-rating-count">Based on Google Reviews</span>
+        </div>
+      </div>
+
+      <div class="google-reviews-grid">
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar">R</div>
+            <div class="google-review-author">
+              <span class="google-review-name">Rahul Sharma</span>
+              <span class="google-review-date">2 weeks ago</span>
+            </div>
+            <i class="fa-brands fa-google google-review-icon"></i>
+          </div>
+          <div class="google-review-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="google-review-text">Amazing Egyptian desserts! The Lotus Aseeratul was absolutely divine. Authentic taste and premium quality. Must visit for dessert lovers in Pune.</p>
+        </div>
+
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar">P</div>
+            <div class="google-review-author">
+              <span class="google-review-name">Priya Patel</span>
+              <span class="google-review-date">1 month ago</span>
+            </div>
+            <i class="fa-brands fa-google google-review-icon"></i>
+          </div>
+          <div class="google-review-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="google-review-text">Finally found authentic Dubai-style desserts in Pune! The Pistachio Aseeratul is heavenly. Great ambiance and friendly staff. Highly recommended!</p>
+        </div>
+
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar">A</div>
+            <div class="google-review-author">
+              <span class="google-review-name">Amit Desai</span>
+              <span class="google-review-date">3 weeks ago</span>
+            </div>
+            <i class="fa-brands fa-google google-review-icon"></i>
+          </div>
+          <div class="google-review-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <p class="google-review-text">Unique concept with Egyptian desserts. The Cheese Bomb was a delightful surprise. Perfect place for celebrations. Will definitely come back!</p>
+        </div>
+
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar">S</div>
+            <div class="google-review-author">
+              <span class="google-review-name">Sneha Kulkarni</span>
+              <span class="google-review-date">2 months ago</span>
+            </div>
+            <i class="fa-brands fa-google google-review-icon"></i>
+          </div>
+          <div class="google-review-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="google-review-text">Incredible flavors! Tried the Heba Cake and Fazea Chocola Cake - both were exceptional. The presentation is beautiful and tastes even better. Love this place!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ======== ADDRESS DETAIL MODAL ======== -->
   <div class="address-modal" id="address-modal" aria-modal="true" role="dialog" aria-label="Address Details">
     <button class="address-modal-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>

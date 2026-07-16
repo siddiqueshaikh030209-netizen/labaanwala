@@ -989,6 +989,73 @@ body {
   font-size: 0.95rem;
 }
 
+/* --- FILTER TABS --- */
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 0.6rem 1.25rem;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  background: var(--color-white);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.filter-tab.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+/* --- STATUS BADGES --- */
+.status-badge {
+  display: inline-flex;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-approved {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.status-pending {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+/* --- REVIEW STARS (Admin Table) --- */
+.review-stars-admin {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.review-stars-admin .star-filled {
+  color: #F59E0B;
+  font-size: 0.8rem;
+}
+
+.review-stars-admin .star-empty {
+  color: #D1D5DB;
+  font-size: 0.8rem;
+}
+
 /* --- MENU CARDS GRID --- */
 .menu-cards-grid {
   display: grid;

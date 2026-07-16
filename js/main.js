@@ -69,14 +69,26 @@ document.addEventListener('DOMContentLoaded', () => {
     return data || []
   }
 
+  async function fetchApprovedReviews() {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('is_approved', true)
+      .order('created_at', { ascending: false })
+      .limit(6)
+    if (error) { console.error('Failed to load reviews:', error); return [] }
+    return data || []
+  }
+
   async function fetchAndRenderAll() {
-    const [heroSlides, storyImages, categories, menuItems, addresses, menuCards] = await Promise.all([
+    const [heroSlides, storyImages, categories, menuItems, addresses, menuCards, reviews] = await Promise.all([
       fetchHeroSlides(),
       fetchStoryImages(),
       fetchCategories(),
       fetchMenuItems(),
       fetchAddresses(),
-      fetchMenuCards()
+      fetchMenuCards(),
+      fetchApprovedReviews()
     ])
 
     renderHeroSlides(heroSlides)
@@ -84,6 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCategoryCards(categories, menuItems)
     renderMenuCards(menuCards)
     renderAddressCards(addresses)
+    renderReviews(reviews)
+    initReviewForm()
     dataLoaded = true
     menuRenderResolve()
   }
@@ -520,8 +534,132 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   /* =============================
-     PRELOADER
+     RENDER REVIEWS
   ============================= */
+  function renderReviews(reviews) {
+    const grid = document.getElementById('reviews-grid')
+    if (!grid) return
+
+    if (reviews.length === 0) {
+      grid.innerHTML = '<p class="review-empty">No reviews yet. Be the first to share your experience!</p>'
+      return
+    }
+
+    grid.innerHTML = reviews.map(review => {
+      const initial = review.customer_name.charAt(0).toUpperCase()
+      const stars = Array(review.rating).fill('<i class="fa-solid fa-star"></i>').join('')
+      const date = new Date(review.created_at).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      })
+
+      return `
+        <div class="review-card">
+          <div class="review-card-header">
+            <div class="review-avatar">${initial}</div>
+            <div class="review-author-info">
+              <span class="review-author-name">${review.customer_name}</span>
+              <span class="review-date">${date}</span>
+            </div>
+          </div>
+          <div class="review-stars">${stars}</div>
+          <p class="review-text">"${review.comment}"</p>
+        </div>
+      `
+    }).join('')
+  }
+
+  /* =============================
+     REVIEW FORM
+  ============================= */
+  let selectedRating = 0
+
+  function initReviewForm() {
+    const form = document.getElementById('review-form')
+    const ratingStars = document.querySelectorAll('.rating-star')
+    const messageEl = document.getElementById('review-form-message')
+    const submitBtn = document.getElementById('review-submit-btn')
+
+    if (!form) return
+
+    ratingStars.forEach(star => {
+      star.addEventListener('click', () => {
+        selectedRating = Number(star.dataset.rating)
+        updateStarDisplay()
+      })
+
+      star.addEventListener('mouseenter', () => {
+        const rating = Number(star.dataset.rating)
+        ratingStars.forEach((s, i) => {
+          s.style.color = i < rating ? '#F59E0B' : '#D1D5DB'
+        })
+      })
+
+      star.addEventListener('mouseleave', () => {
+        updateStarDisplay()
+      })
+    })
+
+    function updateStarDisplay() {
+      ratingStars.forEach((s, i) => {
+        s.classList.toggle('active', i < selectedRating)
+        s.style.color = i < selectedRating ? '#F59E0B' : '#D1D5DB'
+      })
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const name = document.getElementById('review-name').value.trim()
+      const comment = document.getElementById('review-comment').value.trim()
+
+      if (!name || !comment) {
+        showMessage('Please fill in all fields.', 'error')
+        return
+      }
+
+      if (selectedRating === 0) {
+        showMessage('Please select a rating.', 'error')
+        return
+      }
+
+      submitBtn.disabled = true
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...'
+
+      const { error } = await supabase.from('reviews').insert([
+        {
+          customer_name: name,
+          rating: selectedRating,
+          comment: comment
+        }
+      ])
+
+      submitBtn.disabled = false
+      submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Review'
+
+      if (error) {
+        showMessage('Something went wrong. Please try again.', 'error')
+        console.error('Review submission error:', error)
+        return
+      }
+
+      form.reset()
+      selectedRating = 0
+      updateStarDisplay()
+      showMessage('Thank you! Your review has been submitted and will appear after approval.', 'success')
+    })
+
+    function showMessage(text, type) {
+      if (!messageEl) return
+      messageEl.textContent = text
+      messageEl.className = 'review-form-message ' + type
+      setTimeout(() => {
+        messageEl.textContent = ''
+        messageEl.className = 'review-form-message'
+      }, 5000)
+    }
+  }
   const loaderProgress = document.getElementById('preloader-number');
   const preloader = document.getElementById('preloader');
 

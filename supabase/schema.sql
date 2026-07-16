@@ -65,12 +65,23 @@ CREATE TRIGGER menu_items_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at();
 
+-- REVIEWS TABLE
+CREATE TABLE reviews (
+  id BIGSERIAL PRIMARY KEY,
+  customer_name TEXT NOT NULL,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  comment TEXT NOT NULL,
+  is_approved BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- ROW LEVEL SECURITY
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE hero_slides ENABLE ROW LEVEL SECURITY;
 ALTER TABLE story_images ENABLE ROW LEVEL SECURITY;
 ALTER TABLE addresses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 
 -- PUBLIC CAN READ
 CREATE POLICY "Public read categories"
@@ -115,6 +126,25 @@ CREATE POLICY "Auth update addresses"
 
 CREATE POLICY "Auth delete addresses"
   ON addresses FOR DELETE USING (auth.role() = 'authenticated');
+
+-- PUBLIC CAN INSERT REVIEWS
+CREATE POLICY "Public insert reviews"
+  ON reviews FOR INSERT WITH CHECK (true);
+
+-- PUBLIC CAN READ ONLY APPROVED REVIEWS
+CREATE POLICY "Public read approved reviews"
+  ON reviews FOR SELECT USING (is_approved = true);
+
+-- AUTHENTICATED USERS CAN READ ALL REVIEWS
+CREATE POLICY "Auth read all reviews"
+  ON reviews FOR SELECT USING (auth.role() = 'authenticated');
+
+-- AUTHENTICATED USERS CAN UPDATE/DELETE REVIEWS
+CREATE POLICY "Auth update reviews"
+  ON reviews FOR UPDATE USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Auth delete reviews"
+  ON reviews FOR DELETE USING (auth.role() = 'authenticated');
 
 -- STORAGE BUCKETS
 INSERT INTO storage.buckets (id, name, public)
