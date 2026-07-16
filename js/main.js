@@ -268,6 +268,18 @@ document.addEventListener('DOMContentLoaded', () => {
   ============================= */
   const categoryImages = new Map()
 
+  function itemMatchesCategory(item, category) {
+    if (!item || !category) return false
+
+    if (item.category_id != null && category.id != null && Number(item.category_id) === Number(category.id)) {
+      return true
+    }
+
+    const itemCategoryName = String(item.category || '').trim().toLowerCase()
+    const categoryName = String(category.name || '').trim().toLowerCase()
+    return itemCategoryName !== '' && itemCategoryName === categoryName
+  }
+
   function renderCategoryCards(categories, items) {
     const grid = document.getElementById('category-grid')
     if (!grid) return
@@ -278,11 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     grid.innerHTML = categories.map(cat => {
-      const catItems = items.filter(i => i.category_id === cat.id)
-      const images = catItems.filter(i => i.image_url).map(i => i.image_url)
-      categoryImages.set(cat.id, images)
+      const catItems = items.filter(i => itemMatchesCategory(i, cat))
+      const slides = catItems.filter(i => i.image_url)
+      categoryImages.set(cat.id, slides.map(item => item.image_url))
 
-      if (images.length === 0) {
+      if (slides.length === 0) {
         return `
           <div class="category-card-item" data-category-id="${cat.id}">
             <div class="category-card-item-header">
@@ -303,13 +315,14 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="category-card-slider">
             <div class="category-slider-track">
-              ${images.map(url => `
+              ${slides.map(item => `
                 <div class="category-slide">
-                  <img src="${url}" alt="${cat.name}" loading="lazy">
+                  <img src="${item.image_url}" alt="${item.name}" loading="lazy">
+                  <div class="hero-slide-label category-slide-label">${item.name}</div>
                 </div>
               `).join('')}
             </div>
-            ${images.length > 1 ? `
+            ${slides.length > 1 ? `
             <button class="category-slider-btn category-slider-prev" aria-label="Previous">
               <i class="fa-solid fa-chevron-left"></i>
             </button>
@@ -317,10 +330,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <i class="fa-solid fa-chevron-right"></i>
             </button>
             <div class="category-slider-dots">
-              ${images.map((_, i) => `<button class="category-slider-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`).join('')}
+              ${slides.map((_, i) => `<button class="category-slider-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`).join('')}
             </div>
             ` : ''}
           </div>
+          
         </div>
       `
     }).join('')
