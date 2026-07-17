@@ -7,6 +7,7 @@ export default function MenuForm({ item, preselectedCategory, categories, onClos
   const [price, setPrice] = useState(item?.price || '')
   const [categoryId, setCategoryId] = useState(item?.category_id || preselectedCategory || '')
   const [imageUrl, setImageUrl] = useState(item?.image_url || '')
+  const [isComingSoon, setIsComingSoon] = useState(item?.is_coming_soon || false)
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -49,7 +50,8 @@ export default function MenuForm({ item, preselectedCategory, categories, onClos
       price: price ? Number(price) : null,
       category: selectedCat ? selectedCat.name : null,
       category_id: categoryId ? Number(categoryId) : null,
-      image_url: imageUrl || null
+      image_url: imageUrl || null,
+      is_coming_soon: isComingSoon
     }
 
     let result
@@ -111,6 +113,21 @@ export default function MenuForm({ item, preselectedCategory, categories, onClos
             {imageUrl && (
               <img src={imageUrl} alt="Preview" className="form-preview" />
             )}
+          </div>
+
+          <div className="form-group">
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={isComingSoon}
+                onChange={(e) => setIsComingSoon(e.target.checked)}
+                style={{ width: 'auto' }}
+              />
+              Mark as "Coming Soon"
+            </label>
+            <p className="form-hint" style={{ marginTop: '0.35rem', fontSize: '0.82rem', color: 'var(--color-text-light)' }}>
+              This item will display a "Coming Soon" badge on the website instead of its price.
+            </p>
           </div>
 
           {error && <div className="form-error">{error}</div>}

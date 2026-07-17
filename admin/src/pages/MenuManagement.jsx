@@ -219,6 +219,7 @@ export default function MenuManagement() {
                               <th>Name</th>
                               <th>Description</th>
                               <th>Price</th>
+                              <th>Status</th>
                               <th>Actions</th>
                             </tr>
                           </thead>
@@ -238,6 +239,13 @@ export default function MenuManagement() {
                                 <td className="cell-name">{item.name}</td>
                                 <td className="cell-desc">{item.description}</td>
                                 <td>{item.price ? `₹${item.price}` : '-'}</td>
+                                <td>
+                                  {item.is_coming_soon ? (
+                                    <span className="coming-soon-badge">Coming Soon</span>
+                                  ) : (
+                                    <span style={{ color: 'var(--color-text-light)', fontSize: '0.85rem' }}>Active</span>
+                                  )}
+                                </td>
                                 <td>
                                   <div className="action-btns">
                                     <button className="btn-icon btn-edit" onClick={() => handleEditItem(item)} title="Edit">

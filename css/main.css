@@ -1197,6 +1197,84 @@ img {
   }
 }
 
+/* --- COMING SOON BADGE --- */
+.coming-soon-slide {
+  position: relative;
+}
+
+.coming-soon-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 87, 184, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  animation: coming-soon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes coming-soon-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.95; }
+}
+
+.coming-soon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.65rem 1.4rem;
+  border-radius: 50px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  animation: coming-soon-float 3s ease-in-out infinite;
+}
+
+.coming-soon-label i {
+  font-size: 0.9rem;
+  animation: coming-soon-spin 4s linear infinite;
+}
+
+@keyframes coming-soon-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes coming-soon-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Coming soon badge in admin table */
+.coming-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  background: var(--color-accent-light);
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+.coming-soon-badge::before {
+  content: "\f017";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.7rem;
+}
+
 /* Visual Menu Cards Section */
 .visual-menu-cards-section {
   margin-top: 6rem;
