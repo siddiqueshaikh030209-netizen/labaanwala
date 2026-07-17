@@ -69,6 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return data || []
   }
 
+  async function fetchEvents() {
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+    if (error) { console.error('Failed to load events:', error); return [] }
+    return data || []
+  }
+
   async function fetchApprovedReviews() {
     const { data, error } = await supabase
       .from('reviews')
@@ -81,14 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function fetchAndRenderAll() {
-    const [heroSlides, storyImages, categories, menuItems, addresses, menuCards, reviews] = await Promise.all([
+    const [heroSlides, storyImages, categories, menuItems, addresses, menuCards, reviews, events] = await Promise.all([
       fetchHeroSlides(),
       fetchStoryImages(),
       fetchCategories(),
       fetchMenuItems(),
       fetchAddresses(),
       fetchMenuCards(),
-      fetchApprovedReviews()
+      fetchApprovedReviews(),
+      fetchEvents()
     ])
 
     renderHeroSlides(heroSlides)
@@ -97,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMenuCards(menuCards)
     renderAddressCards(addresses)
     renderReviews(reviews)
+    renderEvents(events)
     initReviewForm()
     dataLoaded = true
     menuRenderResolve()
@@ -427,6 +439,74 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `).join('')
+  }
+
+  /* =============================
+     RENDER EVENTS
+  ============================= */
+  function renderEvents(events) {
+    const grid = document.getElementById('events-grid')
+    const section = document.getElementById('events-section')
+    if (!grid || !section) return
+
+    if (events.length === 0) {
+      section.style.display = 'none'
+      return
+    }
+
+    section.style.display = ''
+
+    const typeIcons = {
+      promotion: 'fa-tag',
+      private_booking: 'fa-calendar-check',
+      special_offer: 'fa-percent',
+      festival: 'fa-gift',
+      new_launch: 'fa-rocket'
+    }
+
+    const typeLabels = {
+      promotion: 'Promotion',
+      private_booking: 'Private Booking',
+      special_offer: 'Special Offer',
+      festival: 'Festival',
+      new_launch: 'New Launch'
+    }
+
+    grid.innerHTML = events.map(event => {
+      const icon = typeIcons[event.event_type] || 'fa-calendar'
+      const label = typeLabels[event.event_type] || 'Event'
+      const badgeClass = `event-badge-${event.event_type}`
+
+      const imageHtml = event.image_url
+        ? `<img src="${event.image_url}" alt="${event.title}" loading="lazy">`
+        : `<div class="event-card-icon"><i class="fa-solid ${icon}"></i></div>`
+
+      const dateHtml = event.event_date
+        ? `<div class="event-card-date"><i class="fa-regular fa-calendar"></i> ${new Date(event.event_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>`
+        : ''
+
+      const ctaText = event.badge_text || 'Learn More'
+
+      return `
+        <div class="event-card">
+          <div class="event-card-image">
+            ${imageHtml}
+            <span class="event-card-badge ${badgeClass}">${ctaText}</span>
+          </div>
+          <div class="event-card-body">
+            <div class="event-card-type"><i class="fa-solid ${icon}"></i> ${label}</div>
+            <h3 class="event-card-title">${event.title}</h3>
+            <p class="event-card-desc">${event.description || ''}</p>
+          </div>
+          <div class="event-card-footer">
+            ${dateHtml}
+            <a href="https://wa.me/919730738285?text=${encodeURIComponent('Hi! I\'m interested in: ' + event.title)}" target="_blank" rel="noopener noreferrer" class="event-card-cta">
+              ${ctaText} <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      `
+    }).join('')
   }
 
   /* =============================
