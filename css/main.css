@@ -1547,6 +1547,241 @@ img {
   }
 }
 
+/* --- EVENTS SECTION --- */
+.events {
+  background: var(--color-bg);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 1100px) {
+  .events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.event-card {
+  background: var(--color-secondary);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 87, 184, 0.06);
+  transition: var(--transition-smooth);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 87, 184, 0.09);
+  border-color: rgba(0, 87, 184, 0.14);
+}
+
+.event-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-accent-light) 0%, #f0f7ff 100%);
+  position: relative;
+}
+
+.event-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.event-card:hover .event-card-image img {
+  transform: scale(1.05);
+}
+
+.event-card-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--color-primary);
+  opacity: 0.6;
+}
+
+.event-card-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.event-badge-promotion {
+  background: rgba(0, 87, 184, 0.9);
+  color: white;
+}
+
+.event-badge-private_booking {
+  background: rgba(37, 211, 102, 0.9);
+  color: white;
+}
+
+.event-badge-special_offer {
+  background: rgba(245, 158, 11, 0.9);
+  color: white;
+}
+
+.event-badge-festival {
+  background: rgba(168, 85, 247, 0.9);
+  color: white;
+}
+
+.event-badge-new_launch {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+}
+
+.event-card-body {
+  padding: 1.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card-type {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-card-type i {
+  font-size: 0.8rem;
+}
+
+.event-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.event-card-desc {
+  font-size: 0.92rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.event-card-footer {
+  padding: 0 1.75rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-card-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.event-card-date i {
+  color: var(--color-primary);
+  font-size: 0.85rem;
+}
+
+.event-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  background: var(--color-accent-light);
+  border-radius: 50px;
+  transition: var(--transition-smooth);
+  border: none;
+  cursor: pointer;
+}
+
+.event-card-cta:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.event-card-cta i {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+}
+
+.event-card-cta:hover i {
+  transform: translateX(3px);
+}
+
+.event-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-text-light);
+  padding: 4rem 2rem;
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+@media (max-width: 576px) {
+  .event-card-body {
+    padding: 1.25rem;
+  }
+  .event-card-footer {
+    padding: 0 1.25rem 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .event-card-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* --- LIGHTBOX --- */
 .lightbox {
   position: fixed;
