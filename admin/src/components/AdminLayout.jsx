@@ -17,6 +17,7 @@ export default function AdminLayout() {
     { to: '/addresses', icon: 'fa-location-dot', label: 'Addresses' },
     { to: '/menu-cards', icon: 'fa-rectangle-ad', label: 'Menu Cards' },
     { to: '/reviews', icon: 'fa-comments', label: 'Reviews' },
+    { to: '/events', icon: 'fa-calendar-days', label: 'Events' },
   ]
 
   return (

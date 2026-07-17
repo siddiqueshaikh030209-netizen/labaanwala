@@ -5,6 +5,7 @@ import MenuManagement from './pages/MenuManagement'
 import AddressManagement from './pages/AddressManagement'
 import MenuCards from './pages/MenuCards'
 import ReviewsManagement from './pages/ReviewsManagement'
+import EventsManagement from './pages/EventsManagement'
 import AdminLayout from './components/AdminLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="addresses" element={<AddressManagement />} />
         <Route path="menu-cards" element={<MenuCards />} />
         <Route path="reviews" element={<ReviewsManagement />} />
+        <Route path="events" element={<EventsManagement />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
