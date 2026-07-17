@@ -328,8 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="category-card-slider">
             <div class="category-slider-track">
               ${slides.map(item => `
-                <div class="category-slide">
+                <div class="category-slide${item.is_coming_soon ? ' coming-soon-slide' : ''}">
                   <img src="${item.image_url}" alt="${item.name}" loading="lazy">
+                  ${item.is_coming_soon ? '<div class="coming-soon-overlay"><span class="coming-soon-label"><i class="fa-solid fa-clock"></i> Coming Soon</span></div>' : ''}
                   <div class="hero-slide-label category-slide-label">${item.name}</div>
                 </div>
               `).join('')}
