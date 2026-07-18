@@ -434,10 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="menu-image-card">
         <img src="${card.image_url}" alt="${card.title}" class="menu-card-img" loading="lazy"
              onerror="this.closest('.menu-image-card')?.classList.add('card-hidden')">
-        <div class="menu-image-overlay">
-          <i class="fa-solid fa-magnifying-glass-plus"></i>
-          <span>View Full Menu</span>
-        </div>
       </div>
     `).join('')
   }
@@ -824,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* =============================
-     LIGHTBOX — MENU CARD IMAGES
+     LIGHTBOX — MENU CARD IMAGES (with zoom)
   ============================= */
   const menuImageCards = document.querySelectorAll('.menu-image-card');
   const lightbox = document.getElementById('lightbox');
@@ -835,6 +831,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let menuImages = [];
   let currentImageIndex = 0;
+  let zoomScale = 1;
+  let panX = 0;
+  let panY = 0;
+  let lastPinchDist = 0;
+  let isPinching = false;
+  const MIN_ZOOM = 1;
+  const MAX_ZOOM = 5;
+  const ZOOM_STEP = 0.25;
 
   menuImageCards.forEach((card, index) => {
     const imgEl = card.querySelector('.menu-card-img');
@@ -847,7 +851,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  function applyZoom() {
+    if (lightboxImg) {
+      lightboxImg.style.transform = `scale(${zoomScale}) translate(${panX}px, ${panY}px)`;
+    }
+  }
+
+  function resetZoom() {
+    zoomScale = 1;
+    panX = 0;
+    panY = 0;
+    if (lightboxImg) {
+      lightboxImg.style.transform = '';
+    }
+  }
+
   function openLightbox() {
+    resetZoom();
     updateLightboxImage();
     if (lightbox) {
       lightbox.classList.add('active');
@@ -859,12 +879,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lightbox) {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
+      resetZoom();
     }
   }
 
   function updateLightboxImage() {
     if (lightboxImg && menuImages.length > 0) {
       lightboxImg.src = menuImages[currentImageIndex];
+      resetZoom();
     }
   }
 
@@ -894,6 +916,64 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowRight') showNextImage();
     if (e.key === 'ArrowLeft') showPrevImage();
   });
+
+  /* --- Scroll-to-zoom (desktop) --- */
+  if (lightbox) {
+    lightbox.addEventListener('wheel', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP;
+      zoomScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomScale + delta));
+      if (zoomScale === MIN_ZOOM) panX = 0;
+      panY = 0;
+      applyZoom();
+    }, { passive: false });
+  }
+
+  /* --- Click-to-zoom toggle (desktop) --- */
+  if (lightboxImg) {
+    lightboxImg.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (zoomScale > MIN_ZOOM) {
+        resetZoom();
+      } else {
+        zoomScale = 2.5;
+        applyZoom();
+      }
+    });
+  }
+
+  /* --- Pinch-to-zoom (mobile) --- */
+  if (lightbox) {
+    lightbox.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        isPinching = true;
+        lastPinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    }, { passive: true });
+
+    lightbox.addEventListener('touchmove', (e) => {
+      if (!isPinching || e.touches.length !== 2) return;
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const scaleChange = (dist - lastPinchDist) * 0.01;
+      zoomScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomScale + scaleChange));
+      lastPinchDist = dist;
+      if (zoomScale === MIN_ZOOM) panX = 0;
+      panY = 0;
+      applyZoom();
+    }, { passive: false });
+
+    lightbox.addEventListener('touchend', () => {
+      isPinching = false;
+    }, { passive: true });
+  }
 
   /* =============================
      ACTIVE NAV LINK HIGHLIGHT
